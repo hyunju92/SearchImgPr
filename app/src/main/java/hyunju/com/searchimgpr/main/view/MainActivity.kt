@@ -1,4 +1,4 @@
-package hyunju.com.searchimgpr.main
+package hyunju.com.searchimgpr.main.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,8 +10,8 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.ActivityMainBinding
-import hyunju.com.searchimgpr.keep.KeepFragment
-import hyunju.com.searchimgpr.search.SearchFragment
+import hyunju.com.searchimgpr.keep.view.KeepFragment
+import hyunju.com.searchimgpr.search.view.SearchFragment
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
