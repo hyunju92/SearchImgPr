@@ -8,6 +8,7 @@ import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.ActivityDetailBinding
 import hyunju.com.searchimgpr.detail.vm.DetailViewModel
 import hyunju.com.searchimgpr.keep.view.KeepFragment.Companion.IMG_STR
+import hyunju.com.searchimgpr.keep.view.KeepFragment.Companion.IS_MARKED
 
 class DetailActivity : AppCompatActivity() {
 
@@ -20,11 +21,19 @@ class DetailActivity : AppCompatActivity() {
             vm = detailViewModel
         }
         initView()
+        initData()
     }
 
+
     private fun initView() {
-        intent.getStringExtra(IMG_STR)?.let {
-            detailViewModel.testSetImgStr(it)
-        }
+
+
+    }
+
+    private fun initData() {
+        val imgStr = intent.getStringExtra(IMG_STR)
+        val isMarked = intent.getBooleanExtra(IS_MARKED, false)
+        if(imgStr != null) detailViewModel.setImgData(imgStr, isMarked)
+
     }
 }

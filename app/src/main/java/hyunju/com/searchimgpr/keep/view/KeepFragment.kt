@@ -29,6 +29,7 @@ class KeepFragment : Fragment() {
 
     companion object {
         const val IMG_STR = "imgStr"
+        const val IS_MARKED = "isMarked"
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -74,12 +75,11 @@ class KeepFragment : Fragment() {
     private fun moveDetail(imgStr : String) {
         val intent = Intent(requireActivity(), DetailActivity::class.java)
         intent.putExtra(IMG_STR, imgStr)
+        intent.putExtra(IS_MARKED, true)
         startActivity(intent)
     }
 
     private fun removeBookmark(imgStr: String) {
-
-        Log.d("testRemoveBookmark", "imgStr $imgStr")
         sharedViewModel.removeImgUri(imgStr)
     }
 
