@@ -40,10 +40,12 @@ class DetailActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val data = Intent()
-        data.putExtra(IS_MARKED, detailViewModel.isMarked.get())
-        data.putExtra(IMG_STR, detailViewModel.imgStr.get())
-        setResult(Activity.RESULT_OK, data)
+        Intent().apply {
+            putExtra(IS_MARKED, detailViewModel.isMarked.get())
+            putExtra(IMG_STR, detailViewModel.imgStr.get())
+        }.let {
+            setResult(Activity.RESULT_OK, it)
+        }
 
         super.onBackPressed()
     }

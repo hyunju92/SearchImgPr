@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -29,12 +30,7 @@ class KeepFragment : Fragment() {
     private var eventDisposable: Disposable? = null
 
     private val startDetail = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val isMarked = result.data?.getBooleanExtra(IS_MARKED, false)
-            val imgStr = result.data?.getStringExtra(IMG_STR)
-
-            if(isMarked == false && imgStr != null) removeBookmark(imgStr)
-        }
+        startDetailResult(result)
     }
 
     companion object {
@@ -84,11 +80,21 @@ class KeepFragment : Fragment() {
     }
 
     private fun moveDetail(imgStr : String) {
-        val intent = Intent(requireActivity(), DetailActivity::class.java)
-        intent.putExtra(IMG_STR, imgStr)
-        intent.putExtra(IS_MARKED, true)
+        Intent(requireActivity(), DetailActivity::class.java).apply {
+            putExtra(IMG_STR, imgStr)
+            putExtra(IS_MARKED, true)
+        }.let {
+            startDetail.launch(it)
+        }
+    }
 
-        startDetail.launch(intent)
+    private fun startDetailResult(result: ActivityResult) {
+        if (result.resultCode == Activity.RESULT_OK) {
+            val isMarked = result.data?.getBooleanExtra(IS_MARKED, false)
+            val imgStr = result.data?.getStringExtra(IMG_STR)
+
+            if(isMarked == false && imgStr != null) removeBookmark(imgStr)
+        }
     }
 
     private fun removeBookmark(imgStr: String) {
