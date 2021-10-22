@@ -1,11 +1,12 @@
 package hyunju.com.searchimgpr.keep.view
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -27,9 +28,19 @@ class KeepFragment : Fragment() {
     private val keepViewModel: KeepViewModel by viewModels()
     private var eventDisposable: Disposable? = null
 
+    private val startDetail = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val isMarked = result.data?.getBooleanExtra(IS_MARKED, false)
+            val imgStr = result.data?.getStringExtra(IMG_STR)
+
+            if(isMarked == false && imgStr != null) removeBookmark(imgStr)
+        }
+    }
+
     companion object {
         const val IMG_STR = "imgStr"
         const val IS_MARKED = "isMarked"
+        const val START_DETAIL_FROM_KEEP = 1000
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -76,7 +87,8 @@ class KeepFragment : Fragment() {
         val intent = Intent(requireActivity(), DetailActivity::class.java)
         intent.putExtra(IMG_STR, imgStr)
         intent.putExtra(IS_MARKED, true)
-        startActivity(intent)
+
+        startDetail.launch(intent)
     }
 
     private fun removeBookmark(imgStr: String) {

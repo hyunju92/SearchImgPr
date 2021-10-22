@@ -12,4 +12,8 @@ class DetailViewModel : ViewModel(){
         this.isMarked.set(isMarked)
     }
 
+    fun onBookmarkClicked() {
+        val newIsMarked = !(isMarked.get()?:false)
+        isMarked.set(newIsMarked)
+    }
 }

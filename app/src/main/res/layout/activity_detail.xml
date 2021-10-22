@@ -34,6 +34,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="12dp"
+            android:onClick="@{() -> vm.onBookmarkClicked()}"
             android:src="@drawable/img_bookmark_selector"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

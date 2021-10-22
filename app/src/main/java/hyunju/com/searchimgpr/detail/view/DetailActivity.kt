@@ -1,6 +1,9 @@
 package hyunju.com.searchimgpr.detail.view
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -34,6 +37,16 @@ class DetailActivity : AppCompatActivity() {
         val imgStr = intent.getStringExtra(IMG_STR)
         val isMarked = intent.getBooleanExtra(IS_MARKED, false)
         if(imgStr != null) detailViewModel.setImgData(imgStr, isMarked)
-
     }
+
+    override fun onBackPressed() {
+        val data = Intent()
+        data.putExtra(IS_MARKED, detailViewModel.isMarked.get())
+        data.putExtra(IMG_STR, detailViewModel.imgStr.get())
+        setResult(Activity.RESULT_OK, data)
+
+        super.onBackPressed()
+    }
+
+
 }
