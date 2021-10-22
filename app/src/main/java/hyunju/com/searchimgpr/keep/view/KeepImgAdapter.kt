@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.SubviewImgBinding
 import hyunju.com.searchimgpr.keep.vm.KeepViewModel
+import hyunju.com.searchimgpr.main.vm.SharedViewModel
 import hyunju.com.searchimgpr.util.RecyclerAdapter
 
-class KeepImgAdapter(private val keepViewModel: KeepViewModel) : RecyclerView.Adapter<KeepImgAdapter.KeepImgViewHolder>(), RecyclerAdapter<String>{
+class KeepImgAdapter(private val keepViewModel: KeepViewModel, private val sharedViewModel: SharedViewModel) : RecyclerView.Adapter<KeepImgAdapter.KeepImgViewHolder>(), RecyclerAdapter<String>{
     private var imgList : ArrayList<String>? = null
 
     override fun replaceAll(recyclerView: RecyclerView, listItem: List<String>?) {
@@ -22,10 +23,10 @@ class KeepImgAdapter(private val keepViewModel: KeepViewModel) : RecyclerView.Ad
                 notifyDataSetChanged()
 
             } else {
+                val diffResult = DiffUtil.calculateDiff(KeepImgDiffUtil(imgList!!, newList))
                 imgList!!.clear()
                 imgList!!.addAll(newList)
 
-                val diffResult = DiffUtil.calculateDiff(KeepImgDiffUtil(imgList!!, newList))
                 diffResult.dispatchUpdatesTo(this)
             }
         }
@@ -39,6 +40,7 @@ class KeepImgAdapter(private val keepViewModel: KeepViewModel) : RecyclerView.Ad
             false
         ).let {
             it.keepVm = keepViewModel
+            it.sharedVm = sharedViewModel
             KeepImgViewHolder(it)
         }
     }

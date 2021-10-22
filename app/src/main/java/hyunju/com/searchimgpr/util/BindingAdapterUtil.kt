@@ -46,3 +46,8 @@ fun setImgUri(imageView: ImageView, uri: String?) {
             .error(errorImg)
             .into(imageView)
 }
+
+@BindingAdapter("selected")
+fun selected(view: View, selected: Boolean) {
+    view.isSelected = selected
+}

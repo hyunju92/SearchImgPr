@@ -2,6 +2,7 @@ package hyunju.com.searchimgpr.keep.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,6 @@ class KeepFragment : Fragment() {
         const val IMG_STR = "imgStr"
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<FragmentKeepBinding>(inflater, R.layout.fragment_keep, container, false).apply {
             sharedVm = sharedViewModel
@@ -41,8 +41,8 @@ class KeepFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeLiveData()
         initView()
+        observeLiveData()
     }
 
     override fun onDestroyView() {
@@ -54,7 +54,7 @@ class KeepFragment : Fragment() {
         binding.keepRv.run {
             val spanCount = resources.getInteger(R.integer.keep_img_list_span_count)
             layoutManager = GridLayoutManager(requireContext(), spanCount)
-            adapter = KeepImgAdapter(keepViewModel)
+            adapter = KeepImgAdapter(keepViewModel, sharedViewModel)
         }
 
         sharedViewModel.testSetKeepImgList()
@@ -67,7 +67,8 @@ class KeepFragment : Fragment() {
     }
 
     private fun handleUiEvent(uiEvent: KeepUiEvent) = when(uiEvent) {
-       is KeepUiEvent.MoveDetail -> moveDetail(uiEvent.imgStr)
+        is KeepUiEvent.MoveDetail -> moveDetail(uiEvent.imgStr)
+        is KeepUiEvent.RemoveBookmark -> removeBookmark(uiEvent.imgStr)
     }
 
     private fun moveDetail(imgStr : String) {
@@ -75,4 +76,11 @@ class KeepFragment : Fragment() {
         intent.putExtra(IMG_STR, imgStr)
         startActivity(intent)
     }
+
+    private fun removeBookmark(imgStr: String) {
+
+        Log.d("testRemoveBookmark", "imgStr $imgStr")
+        sharedViewModel.removeImgUri(imgStr)
+    }
+
 }
