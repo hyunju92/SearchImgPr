@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.ActivityDetailBinding
 import hyunju.com.searchimgpr.detail.vm.DetailViewModel
+import hyunju.com.searchimgpr.keep.view.KeepFragment.Companion.IMG_STR
 
 class DetailActivity : AppCompatActivity() {
 
@@ -22,6 +23,8 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        detailViewModel.testSetImgStr()
+        intent.getStringExtra(IMG_STR)?.let {
+            detailViewModel.testSetImgStr(it)
+        }
     }
 }

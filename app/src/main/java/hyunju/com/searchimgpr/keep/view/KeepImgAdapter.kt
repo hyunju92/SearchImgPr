@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.SubviewImgBinding
+import hyunju.com.searchimgpr.keep.vm.KeepViewModel
 import hyunju.com.searchimgpr.util.RecyclerAdapter
 
-class KeepImgAdapter : RecyclerView.Adapter<KeepImgAdapter.KeepImgViewHolder>(), RecyclerAdapter<String>{
+class KeepImgAdapter(private val keepViewModel: KeepViewModel) : RecyclerView.Adapter<KeepImgAdapter.KeepImgViewHolder>(), RecyclerAdapter<String>{
     private var imgList : ArrayList<String>? = null
 
     override fun replaceAll(recyclerView: RecyclerView, listItem: List<String>?) {
@@ -37,6 +38,7 @@ class KeepImgAdapter : RecyclerView.Adapter<KeepImgAdapter.KeepImgViewHolder>(),
             parent,
             false
         ).let {
+            it.keepVm = keepViewModel
             KeepImgViewHolder(it)
         }
     }

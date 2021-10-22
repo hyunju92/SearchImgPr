@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="keepVm"
+            type="hyunju.com.searchimgpr.keep.vm.KeepViewModel" />
+
+        <variable
             name="imgUri"
             type="String" />
 
@@ -21,6 +25,7 @@
         android:padding="2dp">
 
         <ImageView
+            android:onClick="@{() -> keepVm.showDetail(imgUri)}"
             android:id="@+id/subviewImg"
             matchHeightToDeviceWidthDivCount="@{true}"
             setImgUri="@{imgUri}"

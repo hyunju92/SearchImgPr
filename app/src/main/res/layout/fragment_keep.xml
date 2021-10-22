@@ -7,6 +7,10 @@
         <variable
             name="sharedVm"
             type="hyunju.com.searchimgpr.main.vm.SharedViewModel" />
+
+        <variable
+            name="keepVm"
+            type="hyunju.com.searchimgpr.keep.vm.KeepViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

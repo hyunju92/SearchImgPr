@@ -13,13 +13,14 @@ import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.FragmentSearchBinding
 import hyunju.com.searchimgpr.detail.view.DetailActivity
 import hyunju.com.searchimgpr.main.vm.SharedViewModel
+import hyunju.com.searchimgpr.search.vm.SearchViewModel
 
 class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
-    private val searchViewModel: SharedViewModel by viewModels()
+    private val searchViewModel: SearchViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<FragmentSearchBinding>(inflater, R.layout.fragment_search, container, false).apply {
@@ -35,12 +36,12 @@ class SearchFragment : Fragment() {
 
     private fun initView() {
         binding.searchBtn.setOnClickListener {
-            showDetail()
+            moveDetail()
         }
     }
 
 
-    private fun showDetail() {
+    private fun moveDetail() {
         startActivity(Intent(requireActivity(), DetailActivity::class.java))
     }
 }
