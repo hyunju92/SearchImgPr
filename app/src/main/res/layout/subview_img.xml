@@ -8,6 +8,7 @@
         <variable
             name="imgUri"
             type="String" />
+
         <import
             alias="ExtensionUtil"
             type="hyunju.com.searchimgpr.util.BindingAdapterUtilKt" />
@@ -17,16 +18,26 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="1dp">
+        android:padding="2dp">
 
         <ImageView
-            setImgUri="@{imgUri}"
             android:id="@+id/subviewImg"
             matchHeightToDeviceWidthDivCount="@{true}"
+            setImgUri="@{imgUri}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="2dp"
             android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/subviewImgBookmark"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/subviewImgBookmark"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/img_bookmark_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
