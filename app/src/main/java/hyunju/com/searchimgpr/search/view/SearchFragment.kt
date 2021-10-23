@@ -54,17 +54,13 @@ class SearchFragment : Fragment() {
             layoutManager = GridLayoutManager(requireContext(), spanCount)
             adapter = SearchImgAdapter(searchViewModel, sharedViewModel)
         }
-
-        binding.searchBtn.setOnClickListener {
-            moveDetail()
-        }
     }
+
     private fun observeLiveData() {
         eventDisposable = searchViewModel.uiEvent.subscribe {
             handleUiEvent(it)
         }
     }
-
 
 
     private fun handleUiEvent(uiEvent: SearchUiEvent?) = when (uiEvent) {
