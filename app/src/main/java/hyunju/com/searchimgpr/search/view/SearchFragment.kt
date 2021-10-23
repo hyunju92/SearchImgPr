@@ -36,7 +36,8 @@ class SearchFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<FragmentSearchBinding>(inflater, R.layout.fragment_search, container, false).apply {
-
+            sharedVm = sharedViewModel
+            searchVm = searchViewModel
         }
         return binding.root
     }
@@ -54,8 +55,6 @@ class SearchFragment : Fragment() {
             adapter = SearchImgAdapter(searchViewModel, sharedViewModel)
         }
 
-        observeSearchList("유미의 세포들")
-
         binding.searchBtn.setOnClickListener {
             moveDetail()
         }
@@ -66,20 +65,27 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun observeSearchList(searchText: String) {
+
+
+    private fun handleUiEvent(uiEvent: SearchUiEvent?) = when (uiEvent) {
+        is SearchUiEvent.SearchText -> loadSearchList(uiEvent.searchText)
+        else -> {}
+    }
+
+    private fun loadSearchList(searchText: String) {
         searchViewModel.getSearchList(searchText).observe(viewLifecycleOwner, Observer {
             lifecycleScope.launch {
                 (binding.searchRv.adapter as SearchImgAdapter).submitData(it)
             }
         })
-
-    }
-
-    private fun handleUiEvent(uiEvent: SearchUiEvent?) {
-
     }
 
     private fun moveDetail() {
         startActivity(Intent(requireActivity(), DetailActivity::class.java))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        eventDisposable?.dispose()
     }
 }

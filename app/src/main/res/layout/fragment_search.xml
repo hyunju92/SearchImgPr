@@ -5,6 +5,14 @@
 
     <data>
 
+        <variable
+            name="sharedVm"
+            type="hyunju.com.searchimgpr.main.vm.SharedViewModel" />
+
+        <variable
+            name="searchVm"
+            type="hyunju.com.searchimgpr.search.vm.SearchViewModel" />
+
 
     </data>
 
@@ -21,13 +29,14 @@
             app:layout_constraintEnd_toStartOf="@+id/searchBtn"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="테스트 검색어검색어검색어검색어검색어검색어검색어검색어검색어검색어" />
+            tools:text="테스트 검색어" />
 
         <Button
             android:id="@+id/searchBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:onClick="@{() -> searchVm.searchText(searchEditText.getText().toString())}"
             android:text="검색"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/searchEditText"
@@ -40,7 +49,6 @@
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/searchBtn" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

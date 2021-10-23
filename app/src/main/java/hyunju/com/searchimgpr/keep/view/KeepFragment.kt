@@ -53,11 +53,6 @@ class KeepFragment : Fragment() {
         observeLiveData()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        eventDisposable?.dispose()
-    }
-
     private fun initView() {
         binding.keepRv.run {
             val spanCount = resources.getInteger(R.integer.img_list_span_count)
@@ -99,6 +94,11 @@ class KeepFragment : Fragment() {
 
     private fun removeBookmark(imgStr: String) {
         sharedViewModel.removeImgUri(imgStr)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        eventDisposable?.dispose()
     }
 
 }
