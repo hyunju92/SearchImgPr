@@ -40,9 +40,11 @@ fun <T> RecyclerView.replaceAll(listItem: List<T>?) {
 fun setImgUri(imageView: ImageView, uri: String?) {
     val loadImg = if (uri.isNullOrEmpty()) R.drawable.ic_baseline_error_outline_24 else uri
     val errorImg = R.drawable.ic_baseline_error_outline_24
+    val placeholderImg = R.drawable.ic_baseline_collections_8
 
         Glide.with(imageView.rootView.context)
             .load(loadImg)
+            .placeholder(placeholderImg)
             .error(errorImg)
             .into(imageView)
 }
