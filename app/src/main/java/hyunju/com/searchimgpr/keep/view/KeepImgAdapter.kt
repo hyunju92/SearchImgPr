@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import hyunju.com.searchimgpr.R
-import hyunju.com.searchimgpr.databinding.SubviewImgBinding
+import hyunju.com.searchimgpr.databinding.SubviewKeepImgBinding
 import hyunju.com.searchimgpr.keep.vm.KeepViewModel
 import hyunju.com.searchimgpr.main.vm.SharedViewModel
 import hyunju.com.searchimgpr.util.RecyclerAdapter
@@ -33,9 +33,9 @@ class KeepImgAdapter(private val keepViewModel: KeepViewModel, private val share
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeepImgViewHolder {
-        return DataBindingUtil.inflate<SubviewImgBinding>(
+        return DataBindingUtil.inflate<SubviewKeepImgBinding>(
             LayoutInflater.from(parent.context),
-            R.layout.subview_img,
+            R.layout.subview_keep_img,
             parent,
             false
         ).let {
@@ -53,7 +53,7 @@ class KeepImgAdapter(private val keepViewModel: KeepViewModel, private val share
         return imgList?.size?:0
     }
 
-    class KeepImgViewHolder(private val binding: SubviewImgBinding) : RecyclerView.ViewHolder(binding.root) {
+    class KeepImgViewHolder(private val binding: SubviewKeepImgBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(imgUrl: String) {
             binding.imgUri = imgUrl
         }

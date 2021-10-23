@@ -60,7 +60,7 @@ class KeepFragment : Fragment() {
 
     private fun initView() {
         binding.keepRv.run {
-            val spanCount = resources.getInteger(R.integer.keep_img_list_span_count)
+            val spanCount = resources.getInteger(R.integer.img_list_span_count)
             layoutManager = GridLayoutManager(requireContext(), spanCount)
             adapter = KeepImgAdapter(keepViewModel, sharedViewModel)
         }

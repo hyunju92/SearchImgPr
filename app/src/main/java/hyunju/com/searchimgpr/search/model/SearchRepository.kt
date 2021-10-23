@@ -19,7 +19,7 @@ class SearchRepository @Inject constructor(
         const val DEFAULT_PAGE_SIZE = 20
     }
 
-    fun loadSearchList(searchText: String): LiveData<PagingData<SearchMergedData>> {
+    fun loadSearchList(searchText: String): LiveData<PagingData<SearchData>> {
         val pageConfig = PagingConfig(pageSize = DEFAULT_PAGE_SIZE, enablePlaceholders = true)
 
         return Pager(

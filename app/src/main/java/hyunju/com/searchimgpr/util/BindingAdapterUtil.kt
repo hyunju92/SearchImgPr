@@ -10,7 +10,7 @@ import hyunju.com.searchimgpr.R
 
 @BindingAdapter("matchHeightToDeviceWidthDivCount")
 fun matchHeightToDeviceWidthDivCount(view: View, boolean: Boolean) {
-    val spanCount = view.context.resources.getInteger(R.integer.keep_img_list_span_count)
+    val spanCount = view.context.resources.getInteger(R.integer.img_list_span_count)
 
     val pxWidth = view.resources.displayMetrics.widthPixels
     val layoutParams: ViewGroup.LayoutParams = view.layoutParams

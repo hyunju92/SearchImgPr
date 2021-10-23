@@ -11,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.FragmentSearchBinding
@@ -47,9 +48,16 @@ class SearchFragment : Fragment() {
     }
 
     private fun initView() {
+        binding.searchRv.run {
+            val spanCount = resources.getInteger(R.integer.img_list_span_count)
+            layoutManager = GridLayoutManager(requireContext(), spanCount)
+            adapter = SearchImgAdapter(searchViewModel, sharedViewModel)
+        }
+
+        observeSearchList("유미의 세포들")
+
         binding.searchBtn.setOnClickListener {
             moveDetail()
-            observeSearchList("유미의 세포들")
         }
     }
     private fun observeLiveData() {
@@ -61,9 +69,10 @@ class SearchFragment : Fragment() {
     private fun observeSearchList(searchText: String) {
         searchViewModel.getSearchList(searchText).observe(viewLifecycleOwner, Observer {
             lifecycleScope.launch {
-//                adapter.submitData(it)
+                (binding.searchRv.adapter as SearchImgAdapter).submitData(it)
             }
         })
+
     }
 
     private fun handleUiEvent(uiEvent: SearchUiEvent?) {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer name="keep_img_list_span_count">2</integer>
+    <integer name="img_list_span_count">2</integer>
 
 </resources>

@@ -7,7 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hyunju.com.searchimgpr.search.model.SearchRepository
-import hyunju.com.searchimgpr.search.model.SearchMergedData
+import hyunju.com.searchimgpr.search.model.SearchData
 import hyunju.com.searchimgpr.search.network.SearchNetworkApi
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,7 +19,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
     val uiEvent = PublishSubject.create<SearchUiEvent>()
 
-    fun getSearchList(searchText: String): LiveData<PagingData<SearchMergedData>> {
+    fun getSearchList(searchText: String): LiveData<PagingData<SearchData>> {
         return searchRepository
             .loadSearchList(searchText)
             .cachedIn(viewModelScope)
