@@ -9,18 +9,29 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
 import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.FragmentSearchBinding
 import hyunju.com.searchimgpr.detail.view.DetailActivity
 import hyunju.com.searchimgpr.main.vm.SharedViewModel
+import hyunju.com.searchimgpr.search.vm.SearchUiEvent
 import hyunju.com.searchimgpr.search.vm.SearchViewModel
+import io.reactivex.rxjava3.disposables.Disposable
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val searchViewModel: SearchViewModel by viewModels()
+
+    private var eventDisposable: Disposable? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<FragmentSearchBinding>(inflater, R.layout.fragment_search, container, false).apply {
@@ -32,14 +43,32 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        observeLiveData()
     }
 
     private fun initView() {
         binding.searchBtn.setOnClickListener {
             moveDetail()
+            observeSearchList("유미의 세포들")
+        }
+    }
+    private fun observeLiveData() {
+        eventDisposable = searchViewModel.uiEvent.subscribe {
+            handleUiEvent(it)
         }
     }
 
+    private fun observeSearchList(searchText: String) {
+        searchViewModel.getSearchList(searchText).observe(viewLifecycleOwner, Observer {
+            lifecycleScope.launch {
+//                adapter.submitData(it)
+            }
+        })
+    }
+
+    private fun handleUiEvent(uiEvent: SearchUiEvent?) {
+
+    }
 
     private fun moveDetail() {
         startActivity(Intent(requireActivity(), DetailActivity::class.java))

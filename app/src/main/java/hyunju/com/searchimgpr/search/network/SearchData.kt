@@ -1,5 +1,7 @@
 package hyunju.com.searchimgpr.search.network
 
+import hyunju.com.searchimgpr.search.model.SearchMergedData
+
 // Image Data
 data class ReqImageData(val query: String, val sort: String?, val page: Int?, val size: Int?)
 
@@ -33,6 +35,31 @@ data class VclipDocuments(
     val author: String
 )
 
+
+// mapper
+fun List<ImageDocuments>.toListSearchUi(): List<SearchMergedData> {
+    return map {
+        it.toSearchUiData()
+    }
+}
+
+fun ImageDocuments.toSearchUiData() : SearchMergedData {
+    return SearchMergedData(
+        thumbnail_url,
+        image_url,
+        dateTime,
+        "IMG"
+    )
+}
+
+fun VclipDocuments.toSearchUiData() : SearchMergedData {
+    return SearchMergedData(
+        thumbnail,
+        thumbnail,
+        datetime,
+        "VCLIP"
+    )
+}
 
 
 

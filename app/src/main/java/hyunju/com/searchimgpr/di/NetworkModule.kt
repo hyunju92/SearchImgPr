@@ -1,7 +1,6 @@
 package hyunju.com.searchimgpr.di
 
 import android.content.Context
-import android.util.Log
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,7 +37,7 @@ object NetworkModule {
     private fun getOkHttpNetworkInterceptor(): Interceptor {
         return object : Interceptor {
             val HEADER_API_KEY = "Authorization"
-            val API_KEY = "4587fb7d7927308b69eed818cf4f43aa"
+            val API_KEY = "KakaoAK 4587fb7d7927308b69eed818cf4f43aa"
 
             override fun intercept(chain: Interceptor.Chain): Response {
                 val newRequest =
