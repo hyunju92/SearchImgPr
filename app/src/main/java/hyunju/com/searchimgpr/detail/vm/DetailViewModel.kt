@@ -23,8 +23,15 @@ class DetailViewModel : ViewModel(){
             uiEvent.onNext(DetailUiEvent.OpenLinkUrl(linkUrl))
         }
     }
+
+    fun onBackpressedWithData() {
+        searchData.get()?.let {
+            uiEvent.onNext(DetailUiEvent.SetResultWithData(it))
+        }
+    }
 }
 
 sealed class DetailUiEvent {
     data class OpenLinkUrl(val linkUrl: String) : DetailUiEvent()
+    data class SetResultWithData(val data: SearchData) : DetailUiEvent()
 }

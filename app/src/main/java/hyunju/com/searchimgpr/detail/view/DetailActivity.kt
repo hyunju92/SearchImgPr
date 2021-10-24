@@ -39,6 +39,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun handleUiEvent(uiEvent: DetailUiEvent?) = when (uiEvent) {
         is DetailUiEvent.OpenLinkUrl -> openLinkUrl(uiEvent.linkUrl)
+        is DetailUiEvent.SetResultWithData -> setResultData(uiEvent.data)
         else -> {}
     }
 
@@ -53,16 +54,18 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    override fun onBackPressed() {
+    private fun setResultData(data: SearchData) {
         Intent().apply {
-            putExtra(SEARCH_DATA, detailViewModel.searchData.get())
+            putExtra(SEARCH_DATA, data)
         }.let {
             setResult(Activity.RESULT_OK, it)
         }
-
-        super.onBackPressed()
     }
 
+    override fun onBackPressed() {
+        detailViewModel.onBackpressedWithData()
+        super.onBackPressed()
+    }
 
     override fun onDestroy() {
         super.onDestroy()
