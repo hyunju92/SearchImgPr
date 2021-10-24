@@ -19,6 +19,7 @@ import hyunju.com.searchimgpr.detail.view.DetailActivity
 import hyunju.com.searchimgpr.bookmark.vm.BookmarkUiEvent
 import hyunju.com.searchimgpr.bookmark.vm.BookmarkViewModel
 import hyunju.com.searchimgpr.databinding.FragmentBookrmarkBinding
+import hyunju.com.searchimgpr.detail.view.DetailActivity.Companion.CLICKED_DATA_FOR_DETAIL
 import hyunju.com.searchimgpr.main.vm.SharedViewModel
 import hyunju.com.searchimgpr.search.model.SearchData
 import io.reactivex.rxjava3.disposables.Disposable
@@ -34,10 +35,6 @@ class BookmarkFragment : Fragment() {
 
     private val startDetail = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         resultStartDetail(result)
-    }
-
-    companion object {
-        const val SEARCH_DATA = "SEARCH_DATA"
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -75,7 +72,7 @@ class BookmarkFragment : Fragment() {
 
     private fun moveDetail(data : SearchData) {
         Intent(requireActivity(), DetailActivity::class.java).apply {
-            putExtra(SEARCH_DATA, data)
+            putExtra(CLICKED_DATA_FOR_DETAIL, data)
         }.let {
             startDetail.launch(it)
         }
@@ -83,7 +80,7 @@ class BookmarkFragment : Fragment() {
 
     private fun resultStartDetail(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
-            val resultData = result.data?.getParcelableExtra<SearchData>(SEARCH_DATA)
+            val resultData = result.data?.getParcelableExtra<SearchData>(CLICKED_DATA_FOR_DETAIL)
             bookmarkViewModel.resultDetail(resultData)
         }
     }

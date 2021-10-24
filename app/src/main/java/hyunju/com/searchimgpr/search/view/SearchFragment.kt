@@ -19,7 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.FragmentSearchBinding
 import hyunju.com.searchimgpr.detail.view.DetailActivity
-import hyunju.com.searchimgpr.bookmark.view.BookmarkFragment
+import hyunju.com.searchimgpr.detail.view.DetailActivity.Companion.CLICKED_DATA_FOR_DETAIL
 import hyunju.com.searchimgpr.main.vm.SharedViewModel
 import hyunju.com.searchimgpr.search.model.SearchData
 import hyunju.com.searchimgpr.search.vm.SearchUiEvent
@@ -89,7 +89,7 @@ class SearchFragment : Fragment() {
 
     private fun moveDetail(data: SearchData) {
         Intent(requireActivity(), DetailActivity::class.java).apply {
-            putExtra(BookmarkFragment.SEARCH_DATA, data)
+            putExtra(CLICKED_DATA_FOR_DETAIL, data)
         }.let {
             startDetail.launch(it)
         }
@@ -97,7 +97,7 @@ class SearchFragment : Fragment() {
 
     private fun resultStartDetail(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
-            val resultData = result.data?.getParcelableExtra<SearchData>(BookmarkFragment.SEARCH_DATA)
+            val resultData = result.data?.getParcelableExtra<SearchData>(CLICKED_DATA_FOR_DETAIL)
             searchViewModel.resultDetail(resultData)
         }
     }

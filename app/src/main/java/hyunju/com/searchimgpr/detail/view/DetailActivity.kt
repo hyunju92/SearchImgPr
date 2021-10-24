@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.ActivityDetailBinding
 import hyunju.com.searchimgpr.detail.vm.DetailViewModel
-import hyunju.com.searchimgpr.bookmark.view.BookmarkFragment.Companion.SEARCH_DATA
 import hyunju.com.searchimgpr.detail.vm.DetailUiEvent
 import hyunju.com.searchimgpr.search.model.SearchData
 import io.reactivex.rxjava3.disposables.Disposable
@@ -21,6 +20,10 @@ class DetailActivity : AppCompatActivity() {
     private val detailViewModel: DetailViewModel by viewModels()
 
     private var eventDisposable: Disposable? = null
+
+    companion object {
+        const val CLICKED_DATA_FOR_DETAIL = "CLICKED_DATA_FOR_DETAIL"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +47,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun initData() {
-        val searchData = intent.getParcelableExtra<SearchData>(SEARCH_DATA)
+        val searchData = intent.getParcelableExtra<SearchData>(CLICKED_DATA_FOR_DETAIL)
         if(searchData!=null) detailViewModel.setImgData(searchData)
     }
 
@@ -56,7 +59,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setResultData(data: SearchData) {
         Intent().apply {
-            putExtra(SEARCH_DATA, data)
+            putExtra(CLICKED_DATA_FOR_DETAIL, data)
         }.let {
             setResult(Activity.RESULT_OK, it)
         }
