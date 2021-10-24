@@ -1,4 +1,4 @@
-package hyunju.com.searchimgpr.keep.view
+package hyunju.com.searchimgpr.bookmark.view
 
 import android.app.Activity
 import android.content.Intent
@@ -15,21 +15,21 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import hyunju.com.searchimgpr.R
-import hyunju.com.searchimgpr.databinding.FragmentKeepBinding
 import hyunju.com.searchimgpr.detail.view.DetailActivity
-import hyunju.com.searchimgpr.keep.vm.KeepUiEvent
-import hyunju.com.searchimgpr.keep.vm.KeepViewModel
+import hyunju.com.searchimgpr.bookmark.vm.BookmarkUiEvent
+import hyunju.com.searchimgpr.bookmark.vm.BookmarkViewModel
+import hyunju.com.searchimgpr.databinding.FragmentBookrmarkBinding
 import hyunju.com.searchimgpr.main.vm.SharedViewModel
 import hyunju.com.searchimgpr.search.model.SearchData
 import io.reactivex.rxjava3.disposables.Disposable
 
 @AndroidEntryPoint
-class KeepFragment : Fragment() {
+class BookmarkFragment : Fragment() {
 
-    private lateinit var binding: FragmentKeepBinding
+    private lateinit var binding: FragmentBookrmarkBinding
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
-    private val keepViewModel: KeepViewModel by viewModels()
+    private val bookmarkViewModel: BookmarkViewModel by viewModels()
     private var eventDisposable: Disposable? = null
 
     private val startDetail = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -41,9 +41,9 @@ class KeepFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = DataBindingUtil.inflate<FragmentKeepBinding>(inflater, R.layout.fragment_keep, container, false).apply {
+        binding = DataBindingUtil.inflate<FragmentBookrmarkBinding>(inflater, R.layout.fragment_bookrmark, container, false).apply {
             sharedVm = sharedViewModel
-            keepVm = keepViewModel
+            bookmarkVm = bookmarkViewModel
         }
         return binding.root
     }
@@ -55,23 +55,23 @@ class KeepFragment : Fragment() {
     }
 
     private fun initView() {
-        binding.keepRv.run {
+        binding.bookmarkRv.run {
             val spanCount = resources.getInteger(R.integer.img_list_span_count)
             layoutManager = GridLayoutManager(requireContext(), spanCount)
-            adapter = KeepAdapter(keepViewModel, sharedViewModel)
+            adapter = BookmarkAdapter(bookmarkViewModel, sharedViewModel)
         }
     }
 
     private fun observeLiveData() {
-        eventDisposable = keepViewModel.uiEvent.subscribe {
+        eventDisposable = bookmarkViewModel.uiEvent.subscribe {
             handleUiEvent(it)
         }
-        sharedViewModel.testSetKeepImgList()
+        sharedViewModel.testSetBookrmarkList()
 
     }
 
-    private fun handleUiEvent(uiEvent: KeepUiEvent) = when(uiEvent) {
-        is KeepUiEvent.MoveDetail -> moveDetail(uiEvent.data)
+    private fun handleUiEvent(uiEvent: BookmarkUiEvent) = when(uiEvent) {
+        is BookmarkUiEvent.MoveDetail -> moveDetail(uiEvent.data)
     }
 
     private fun moveDetail(data : SearchData) {
@@ -87,7 +87,7 @@ class KeepFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
             val searchData = result.data?.getParcelableExtra<SearchData>(SEARCH_DATA)
 
-            if(searchData?.isKept?.get() == false) sharedViewModel.removeKeepList(searchData)
+            if(searchData?.isKept?.get() == false) sharedViewModel.removeBookmarkList(searchData)
 
         }
     }

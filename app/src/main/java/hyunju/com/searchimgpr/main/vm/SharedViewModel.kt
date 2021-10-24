@@ -6,9 +6,9 @@ import hyunju.com.searchimgpr.search.model.SearchData
 
 class SharedViewModel : ViewModel() {
 
-    val keepSearchList = ObservableField<List<SearchData>>()
+    val bookmarkList = ObservableField<List<SearchData>>()
 
-    fun testSetKeepImgList() {
+    fun testSetBookrmarkList() {
 //        val testList = mutableListOf<String>().apply {
 //            add("https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTEwMTFfMjM3%2FMDAxNjMzODk5MzIxNzI5.xSRZ8-Wf0_YJjYLpxlhT5HsL_gmGk1kM3zRdgSn0adgg.efBHUa2U_d5lZ4dgaIVLPyfM0X9K8L92bmON1vPZQhQg.PNG.keunak%2Fimage.png&type=sc960_832")
 //            add("https://postfiles.pstatic.net/MjAyMTA5MjdfODEg/MDAxNjMyNjc5NjU3MTg5.s0noowKoHXssZOPkIELVXez0UVtnj1x5bQL1j3u_IcMg.vipXGD2B6rwYxiJb9U3IMj8uUqozht0kahG74D5zG4og.JPEG.kesu2020/IMG_5468.jpg?type=w773")
@@ -29,19 +29,19 @@ class SharedViewModel : ViewModel() {
             isKept = ObservableField(false)
         )
 
-        addKeepList(testData)
+        addBookrmarkList(testData)
     }
 
-    fun addKeepList(data: SearchData) {
-        val newList = keepSearchList.get()?.toMutableList()?.apply { add(data) }?: arrayListOf(data)
-        keepSearchList.set(newList)
+    fun addBookrmarkList(data: SearchData) {
+        val newList = bookmarkList.get()?.toMutableList()?.apply { add(data) }?: arrayListOf(data)
+        bookmarkList.set(newList)
 
         data.isKept.set(true)
     }
 
-    fun removeKeepList(data: SearchData) {
-        val newList = keepSearchList.get()?.toMutableList()?.apply { removeIf { it.thumbnailUrl == data.thumbnailUrl } }
-        newList?.let { keepSearchList.set(newList) }
+    fun removeBookmarkList(data: SearchData) {
+        val newList = bookmarkList.get()?.toMutableList()?.apply { removeIf { it.thumbnailUrl == data.thumbnailUrl } }
+        newList?.let { bookmarkList.set(newList) }
 
         data.isKept.set(false)
     }
@@ -49,16 +49,16 @@ class SharedViewModel : ViewModel() {
     fun onClickBookmark(data: SearchData) {
         data.isKept.get()?.let { currentIsKept ->
             if(currentIsKept) {
-                removeKeepList(data)
+                removeBookmarkList(data)
             } else {
-                addKeepList(data)
+                addBookrmarkList(data)
             }
         }
 
     }
 
     fun isKept(data: SearchData) : Boolean{
-        return keepSearchList.get()?.contains(data)?:false
+        return bookmarkList.get()?.contains(data)?:false
     }
 
 }

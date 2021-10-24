@@ -29,7 +29,7 @@
         android:padding="2dp">
 
         <ImageView
-            android:id="@+id/subviewImg"
+            android:id="@+id/bookmarkImg"
             matchHeightToDeviceWidthDivCount="@{true}"
             setImgUri="@{data.thumbnailUrl}"
             android:layout_width="match_parent"

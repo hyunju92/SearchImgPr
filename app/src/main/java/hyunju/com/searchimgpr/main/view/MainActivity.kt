@@ -10,7 +10,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.ActivityMainBinding
-import hyunju.com.searchimgpr.keep.view.KeepFragment
+import hyunju.com.searchimgpr.bookmark.view.BookmarkFragment
 import hyunju.com.searchimgpr.search.view.SearchFragment
 
 @AndroidEntryPoint
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        val tabs = listOf(SearchFragment(), KeepFragment())
+        val tabs = listOf(SearchFragment(), BookmarkFragment())
         val tabNames = listOf("검색", "보관")
 
         binding.mainViewPager.apply {

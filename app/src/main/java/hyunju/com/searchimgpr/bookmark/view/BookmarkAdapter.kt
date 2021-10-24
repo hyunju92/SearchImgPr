@@ -1,4 +1,4 @@
-package hyunju.com.searchimgpr.keep.view
+package hyunju.com.searchimgpr.bookmark.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,14 +6,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import hyunju.com.searchimgpr.R
-import hyunju.com.searchimgpr.databinding.SubviewKeepImgBinding
-import hyunju.com.searchimgpr.keep.vm.KeepViewModel
+import hyunju.com.searchimgpr.bookmark.vm.BookmarkViewModel
+import hyunju.com.searchimgpr.databinding.SubviewBookmarkImgBinding
 import hyunju.com.searchimgpr.main.vm.SharedViewModel
 import hyunju.com.searchimgpr.search.model.SearchData
 import hyunju.com.searchimgpr.util.RecyclerAdapter
 
-class KeepAdapter(private val keepViewModel: KeepViewModel, private val sharedViewModel: SharedViewModel)
-    : RecyclerView.Adapter<KeepAdapter.KeepImgViewHolder>(), RecyclerAdapter<SearchData>{
+class BookmarkAdapter(private val bookmarkViewModel: BookmarkViewModel, private val sharedViewModel: SharedViewModel)
+    : RecyclerView.Adapter<BookmarkAdapter.KeepImgViewHolder>(), RecyclerAdapter<SearchData>{
     private var searchDataList : ArrayList<SearchData>? = null
 
     override fun replaceAll(recyclerView: RecyclerView, listItem: List<SearchData>?) {
@@ -35,13 +35,13 @@ class KeepAdapter(private val keepViewModel: KeepViewModel, private val sharedVi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeepImgViewHolder {
-        return DataBindingUtil.inflate<SubviewKeepImgBinding>(
+        return DataBindingUtil.inflate<SubviewBookmarkImgBinding>(
             LayoutInflater.from(parent.context),
-            R.layout.subview_keep_img,
+            R.layout.subview_bookmark_img,
             parent,
             false
         ).let {
-            it.keepVm = keepViewModel
+            it.bookmarkVm = bookmarkViewModel
             it.sharedVm = sharedViewModel
             KeepImgViewHolder(it)
         }
@@ -55,7 +55,7 @@ class KeepAdapter(private val keepViewModel: KeepViewModel, private val sharedVi
         return searchDataList?.size?:0
     }
 
-    class KeepImgViewHolder(private val binding: SubviewKeepImgBinding) : RecyclerView.ViewHolder(binding.root) {
+    class KeepImgViewHolder(private val binding: SubviewBookmarkImgBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: SearchData) {
             binding.data = data
             binding.imgUri = data.thumbnailUrl

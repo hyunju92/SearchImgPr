@@ -10,8 +10,8 @@
             type="hyunju.com.searchimgpr.main.vm.SharedViewModel" />
 
         <variable
-            name="keepVm"
-            type="hyunju.com.searchimgpr.keep.vm.KeepViewModel" />
+            name="bookmarkVm"
+            type="hyunju.com.searchimgpr.bookmark.vm.BookmarkViewModel" />
 
         <variable
             name="imgUri"
@@ -33,19 +33,19 @@
         android:padding="2dp">
 
         <ImageView
-            android:id="@+id/subviewImg"
+            android:id="@+id/bookmarkImg"
             matchHeightToDeviceWidthDivCount="@{true}"
             setImgUri="@{imgUri}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="2dp"
-            android:onClick="@{() -> keepVm.showDetail(data)}"
+            android:onClick="@{() -> bookmarkVm.showDetail(data)}"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/subviewImgBookmark"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:onClick="@{() -> sharedVm.removeKeepList(data)}"
+            android:onClick="@{() -> sharedVm.removeBookmarkList(data)}"
             android:id="@+id/subviewImgBookmark"
             selected="@{data.isKept()}"
             android:layout_width="24dp"

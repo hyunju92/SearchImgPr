@@ -9,7 +9,7 @@ import androidx.databinding.DataBindingUtil
 import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.ActivityDetailBinding
 import hyunju.com.searchimgpr.detail.vm.DetailViewModel
-import hyunju.com.searchimgpr.keep.view.KeepFragment.Companion.SEARCH_DATA
+import hyunju.com.searchimgpr.bookmark.view.BookmarkFragment.Companion.SEARCH_DATA
 import hyunju.com.searchimgpr.search.model.SearchData
 
 class DetailActivity : AppCompatActivity() {
