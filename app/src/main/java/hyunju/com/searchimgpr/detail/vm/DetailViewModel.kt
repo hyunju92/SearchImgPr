@@ -2,14 +2,15 @@ package hyunju.com.searchimgpr.detail.vm
 
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
+import hyunju.com.searchimgpr.search.model.SearchData
 
 class DetailViewModel : ViewModel(){
-    val imgStr = ObservableField<String>()
     val isMarked = ObservableField<Boolean>()
+    val searchData = ObservableField<SearchData>()
 
-    fun setImgData(imgStr: String, isMarked: Boolean) {
-        this.imgStr.set(imgStr)
+    fun setImgData(isMarked: Boolean, searchData: SearchData) {
         this.isMarked.set(isMarked)
+        this.searchData.set(searchData)
     }
 
     fun onBookmarkClicked() {

@@ -17,6 +17,10 @@
             name="imgUri"
             type="String" />
 
+        <variable
+            name="data"
+            type="hyunju.com.searchimgpr.search.model.SearchData" />
+
         <import
             alias="ExtensionUtil"
             type="hyunju.com.searchimgpr.util.BindingAdapterUtilKt" />
@@ -35,13 +39,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="2dp"
-            android:onClick="@{() -> keepVm.showDetail(imgUri)}"
+            android:onClick="@{() -> keepVm.showDetail(data)}"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/subviewImgBookmark"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:onClick="@{() -> keepVm.removeBookmark(imgUri)}"
+            android:onClick="@{() -> sharedVm.removeKeepList(data)}"
             android:id="@+id/subviewImgBookmark"
             selected="@{true}"
             android:layout_width="24dp"

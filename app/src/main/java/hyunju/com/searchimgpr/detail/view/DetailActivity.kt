@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingUtil
 import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.ActivityDetailBinding
 import hyunju.com.searchimgpr.detail.vm.DetailViewModel
-import hyunju.com.searchimgpr.keep.view.KeepFragment.Companion.IMG_STR
 import hyunju.com.searchimgpr.keep.view.KeepFragment.Companion.IS_MARKED
 import hyunju.com.searchimgpr.keep.view.KeepFragment.Companion.SEARCH_DATA
 import hyunju.com.searchimgpr.search.model.SearchData
@@ -29,27 +28,23 @@ class DetailActivity : AppCompatActivity() {
         initData()
     }
 
-
     private fun initView() {
-
 
     }
 
     private fun initData() {
-        val imgStr = intent.getStringExtra(IMG_STR)
         val isMarked = intent.getBooleanExtra(IS_MARKED, false)
-
         val searchData = intent.getParcelableExtra<SearchData>(SEARCH_DATA)
 
         Log.d("testParceableData", "initData: searchData init $searchData")
-
-        if(imgStr != null) detailViewModel.setImgData(imgStr, isMarked)
+        if(searchData!=null) detailViewModel.setImgData(isMarked, searchData)
     }
 
     override fun onBackPressed() {
         Intent().apply {
             putExtra(IS_MARKED, detailViewModel.isMarked.get())
-            putExtra(IMG_STR, detailViewModel.imgStr.get())
+            putExtra(SEARCH_DATA, detailViewModel.searchData.get())
+
         }.let {
             setResult(Activity.RESULT_OK, it)
         }

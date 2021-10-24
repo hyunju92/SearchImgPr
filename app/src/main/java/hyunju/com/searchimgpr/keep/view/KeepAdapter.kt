@@ -57,6 +57,7 @@ class KeepAdapter(private val keepViewModel: KeepViewModel, private val sharedVi
 
     class KeepImgViewHolder(private val binding: SubviewKeepImgBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: SearchData) {
+            binding.data = data
             binding.imgUri = data.thumbnailUrl
         }
     }

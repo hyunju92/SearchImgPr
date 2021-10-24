@@ -44,12 +44,9 @@ class SharedViewModel : ViewModel() {
 
     }
 
-    fun removeKeepList(imgStr: String) {
-//        _keepSearchDataList.value?.toMutableList()?.apply { remove(searchData) }?.let { newList ->
-//            _keepSearchDataList.value = newList
-//        }
-
-//        val newImgList = keepImgList.get()?.toMutableList()?.apply { remove(imgStr) }
-//        keepImgList.set(newImgList)
+    fun removeKeepList(data: SearchData) {
+        _keepSearchDataList.value?.toMutableList()?.apply { remove(data) }?.let { newList ->
+            _keepSearchDataList.value = newList
+        }
     }
 }

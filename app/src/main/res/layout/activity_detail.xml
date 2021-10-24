@@ -21,7 +21,7 @@
 
         <ImageView
             android:id="@+id/detailImg"
-            setImgUri="@{vm.imgStr}"
+            setImgUri="@{vm.searchData.thumbnailUrl}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"

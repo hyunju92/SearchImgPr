@@ -21,6 +21,7 @@ import hyunju.com.searchimgpr.detail.view.DetailActivity
 import hyunju.com.searchimgpr.keep.vm.KeepUiEvent
 import hyunju.com.searchimgpr.keep.vm.KeepViewModel
 import hyunju.com.searchimgpr.main.vm.SharedViewModel
+import hyunju.com.searchimgpr.search.model.SearchData
 import hyunju.com.searchimgpr.util.replaceAll
 import io.reactivex.rxjava3.disposables.Disposable
 
@@ -38,7 +39,6 @@ class KeepFragment : Fragment() {
     }
 
     companion object {
-        const val IMG_STR = "imgStr"
         const val IS_MARKED = "isMarked"
         const val SEARCH_DATA = "searchData"
     }
@@ -77,17 +77,13 @@ class KeepFragment : Fragment() {
     }
 
     private fun handleUiEvent(uiEvent: KeepUiEvent) = when(uiEvent) {
-        is KeepUiEvent.MoveDetail -> moveDetail(uiEvent.imgStr)
-        is KeepUiEvent.RemoveBookmark -> removeBookmark(uiEvent.imgStr)
+        is KeepUiEvent.MoveDetail -> moveDetail(uiEvent.data)
     }
 
-    private fun moveDetail(imgStr : String) {
+    private fun moveDetail(data : SearchData) {
         Intent(requireActivity(), DetailActivity::class.java).apply {
-            putExtra(IMG_STR, imgStr)
             putExtra(IS_MARKED, true)
-            //            add("https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA5MjZfMjgw%2FMDAxNjMyNjE4MDc5NzE3.CIb_BrZ3n5N-wNLKWi0sJf05T8UXedjoDlyxRhqaMW8g.am87-tm1N34zMW2BsN0hPX_vtIvP_eGnZzeAUluXppwg.JPEG.leeeunhye010118%2F1632618076387.jpg&type=sc960_832")
-//            putExtra(SEARCH_DATA, testData)
-
+            putExtra(SEARCH_DATA, data)
 
         }.let {
             startDetail.launch(it)
@@ -97,14 +93,14 @@ class KeepFragment : Fragment() {
     private fun startDetailResult(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
             val isMarked = result.data?.getBooleanExtra(IS_MARKED, false)
-            val imgStr = result.data?.getStringExtra(IMG_STR)
+            val searchData = result.data?.getParcelableExtra<SearchData>(SEARCH_DATA)
 
-            if(isMarked == false && imgStr != null) removeBookmark(imgStr)
+            if(isMarked == false && searchData != null) removeBookmark(searchData)
         }
     }
 
-    private fun removeBookmark(imgStr: String) {
-        sharedViewModel.removeKeepList(imgStr)
+    private fun removeBookmark(data: SearchData) {
+        sharedViewModel.removeKeepList(data)
     }
 
     override fun onDestroyView() {
