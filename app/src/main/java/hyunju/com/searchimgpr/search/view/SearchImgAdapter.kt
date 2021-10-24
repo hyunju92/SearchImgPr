@@ -51,7 +51,7 @@ class SearchImgAdapter(private val searchViewModel: SearchViewModel, private val
 
     class SearchImgViewHolder(private val binding: SubviewSearchImgBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data : SearchData?) {
-            binding.imgUri = data?.thumbnailUrl?:""
+            binding.data = data
         }
     }
 

@@ -36,7 +36,6 @@ class DetailActivity : AppCompatActivity() {
         val isMarked = intent.getBooleanExtra(IS_MARKED, false)
         val searchData = intent.getParcelableExtra<SearchData>(SEARCH_DATA)
 
-        Log.d("testParceableData", "initData: searchData init $searchData")
         if(searchData!=null) detailViewModel.setImgData(isMarked, searchData)
     }
 

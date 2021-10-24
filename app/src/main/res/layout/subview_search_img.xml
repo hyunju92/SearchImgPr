@@ -14,8 +14,8 @@
             type="hyunju.com.searchimgpr.main.vm.SharedViewModel" />
 
         <variable
-            name="imgUri"
-            type="String" />
+            name="data"
+            type="hyunju.com.searchimgpr.search.model.SearchData" />
 
         <import
             alias="ExtensionUtil"
@@ -31,10 +31,11 @@
         <ImageView
             android:id="@+id/subviewImg"
             matchHeightToDeviceWidthDivCount="@{true}"
-            setImgUri="@{imgUri}"
+            setImgUri="@{data.thumbnailUrl}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="2dp"
+            android:onClick="@{() -> searchVm.showDetail(data)}"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/subviewImgBookmark"
             app:layout_constraintTop_toTopOf="parent" />

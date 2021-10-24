@@ -29,8 +29,14 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
             .loadSearchList(searchText)
             .cachedIn(viewModelScope)
     }
+
+    fun showDetail(data: SearchData) {
+        uiEvent.onNext(SearchUiEvent.MoveDetail(data))
+    }
 }
 
 sealed class SearchUiEvent {
     data class SearchText(val searchText: String) : SearchUiEvent()
+    data class MoveDetail(val data: SearchData) : SearchUiEvent()
+
 }

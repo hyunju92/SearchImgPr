@@ -11,7 +11,6 @@ class SharedViewModel : ViewModel() {
     val keepSearchDataList: LiveData<List<SearchData>>
         get() = _keepSearchDataList
 
-
     fun testSetKeepImgList() {
 //        val testList = mutableListOf<String>().apply {
 //            add("https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTEwMTFfMjM3%2FMDAxNjMzODk5MzIxNzI5.xSRZ8-Wf0_YJjYLpxlhT5HsL_gmGk1kM3zRdgSn0adgg.efBHUa2U_d5lZ4dgaIVLPyfM0X9K8L92bmON1vPZQhQg.PNG.keunak%2Fimage.png&type=sc960_832")
@@ -26,7 +25,6 @@ class SharedViewModel : ViewModel() {
 //        }
 //
 
-
         val testData = SearchData(
             imgUrl = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA5MjZfMjgw%2FMDAxNjMyNjE4MDc5NzE3.CIb_BrZ3n5N-wNLKWi0sJf05T8UXedjoDlyxRhqaMW8g.am87-tm1N34zMW2BsN0hPX_vtIvP_eGnZzeAUluXppwg.JPEG.leeeunhye010118%2F1632618076387.jpg&type=sc960_832",
             thumbnailUrl = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA5MjZfMjgw%2FMDAxNjMyNjE4MDc5NzE3.CIb_BrZ3n5N-wNLKWi0sJf05T8UXedjoDlyxRhqaMW8g.am87-tm1N34zMW2BsN0hPX_vtIvP_eGnZzeAUluXppwg.JPEG.leeeunhye010118%2F1632618076387.jpg&type=sc960_832",
@@ -35,13 +33,11 @@ class SharedViewModel : ViewModel() {
         )
 
         addKeepList(testData)
-
     }
 
     fun addKeepList(data: SearchData) {
         val newList = _keepSearchDataList.value?.toMutableList()?.apply { add(data) }?: arrayListOf(data)
         _keepSearchDataList.value = newList
-
     }
 
     fun removeKeepList(data: SearchData) {
