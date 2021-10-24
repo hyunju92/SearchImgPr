@@ -33,7 +33,7 @@ class BookmarkFragment : Fragment() {
     private var eventDisposable: Disposable? = null
 
     private val startDetail = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        startDetailResult(result)
+        resultStartDetail(result)
     }
 
     companion object {
@@ -70,31 +70,23 @@ class BookmarkFragment : Fragment() {
 
     private fun handleUiEvent(uiEvent: BookmarkUiEvent) = when(uiEvent) {
         is BookmarkUiEvent.MoveDetail -> moveDetail(uiEvent.data)
+        is BookmarkUiEvent.ChangeBookmarkState -> sharedViewModel.onClickBookmark(uiEvent.data)
     }
 
     private fun moveDetail(data : SearchData) {
-        currentClickedData = data
         Intent(requireActivity(), DetailActivity::class.java).apply {
             putExtra(SEARCH_DATA, data)
-
         }.let {
             startDetail.launch(it)
         }
     }
 
-    private var currentClickedData : SearchData? = null
-    private fun startDetailResult(result: ActivityResult) {
+    private fun resultStartDetail(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
-            val searchData = result.data?.getParcelableExtra<SearchData>(SEARCH_DATA)
-
-            if(searchData != null && currentClickedData != null &&
-                searchData.isKept.get() == false) {
-                sharedViewModel.onClickBookmark(currentClickedData!!)
-            }
-
+            val resultData = result.data?.getParcelableExtra<SearchData>(SEARCH_DATA)
+            bookmarkViewModel.resultDetail(resultData)
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

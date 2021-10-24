@@ -40,7 +40,7 @@ class SearchFragment : Fragment() {
     private var eventDisposable: Disposable? = null
 
     private val startDetail = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        startDetailResult(result)
+        resultStartDetail(result)
     }
 
 
@@ -97,7 +97,7 @@ class SearchFragment : Fragment() {
     }
 
     private var currentClickedData : SearchData? = null
-    private fun startDetailResult(result: ActivityResult) {
+    private fun resultStartDetail(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
             val searchData = result.data?.getParcelableExtra<SearchData>(BookmarkFragment.SEARCH_DATA)
 
