@@ -75,6 +75,7 @@ class BookmarkFragment : Fragment() {
     }
 
     private fun moveDetail(data : SearchData) {
+        currentClickedData = data
         Intent(requireActivity(), DetailActivity::class.java).apply {
             putExtra(SEARCH_DATA, data)
 
@@ -83,11 +84,15 @@ class BookmarkFragment : Fragment() {
         }
     }
 
+    private var currentClickedData : SearchData? = null
     private fun startDetailResult(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
             val searchData = result.data?.getParcelableExtra<SearchData>(SEARCH_DATA)
 
-            if(searchData?.isKept?.get() == false) sharedViewModel.removeBookmarkList(searchData)
+            if(searchData != null && currentClickedData != null &&
+                searchData.isKept.get() == false) {
+                sharedViewModel.onClickBookmark(currentClickedData!!)
+            }
 
         }
     }
