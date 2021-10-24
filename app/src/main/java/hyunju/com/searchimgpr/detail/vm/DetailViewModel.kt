@@ -9,7 +9,7 @@ class DetailViewModel : ViewModel(){
     val searchData = ObservableField<SearchData>()
     val uiEvent = PublishSubject.create<DetailUiEvent>()
 
-    fun setImgData(searchData: SearchData) {
+    fun setData(searchData: SearchData) {
         this.searchData.set(searchData)
     }
 
@@ -18,7 +18,7 @@ class DetailViewModel : ViewModel(){
         searchData.get()?.isKept?.set(!currentIsKept)
     }
 
-    fun imgClicked(linkUrl: String?) {
+    fun onLinkClicked(linkUrl: String?) {
         linkUrl?.let {
             uiEvent.onNext(DetailUiEvent.OpenLinkUrl(linkUrl))
         }

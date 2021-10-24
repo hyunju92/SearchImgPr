@@ -13,7 +13,7 @@ import hyunju.com.searchimgpr.search.model.SearchData
 import hyunju.com.searchimgpr.util.RecyclerAdapter
 
 class BookmarkAdapter(private val bookmarkViewModel: BookmarkViewModel, private val sharedViewModel: SharedViewModel)
-    : RecyclerView.Adapter<BookmarkAdapter.KeepImgViewHolder>(), RecyclerAdapter<SearchData>{
+    : RecyclerView.Adapter<BookmarkAdapter.BookmarkViewHolder>(), RecyclerAdapter<SearchData>{
     private var searchDataList : ArrayList<SearchData>? = null
 
     override fun replaceAll(recyclerView: RecyclerView, listItem: List<SearchData>?) {
@@ -25,7 +25,7 @@ class BookmarkAdapter(private val bookmarkViewModel: BookmarkViewModel, private 
                 notifyDataSetChanged()
 
             } else {
-                val diffResult = DiffUtil.calculateDiff(KeepImgDiffUtil(searchDataList!!, newList))
+                val diffResult = DiffUtil.calculateDiff(BookmarkDiffUtil(searchDataList!!, newList))
                 searchDataList!!.clear()
                 searchDataList!!.addAll(newList)
 
@@ -34,7 +34,7 @@ class BookmarkAdapter(private val bookmarkViewModel: BookmarkViewModel, private 
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): KeepImgViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkViewHolder {
         return DataBindingUtil.inflate<SubviewBookmarkImgBinding>(
             LayoutInflater.from(parent.context),
             R.layout.subview_bookmark_img,
@@ -43,11 +43,11 @@ class BookmarkAdapter(private val bookmarkViewModel: BookmarkViewModel, private 
         ).let {
             it.bookmarkVm = bookmarkViewModel
             it.sharedVm = sharedViewModel
-            KeepImgViewHolder(it)
+            BookmarkViewHolder(it)
         }
     }
 
-    override fun onBindViewHolder(holder: KeepImgViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BookmarkViewHolder, position: Int) {
         holder.bind(searchDataList!![position])
     }
 
@@ -55,14 +55,14 @@ class BookmarkAdapter(private val bookmarkViewModel: BookmarkViewModel, private 
         return searchDataList?.size?:0
     }
 
-    class KeepImgViewHolder(private val binding: SubviewBookmarkImgBinding) : RecyclerView.ViewHolder(binding.root) {
+    class BookmarkViewHolder(private val binding: SubviewBookmarkImgBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(data: SearchData) {
             binding.data = data
             binding.imgUri = data.thumbnailUrl
         }
     }
 
-    class KeepImgDiffUtil (private val oldList : List<SearchData>, private val newList: List<SearchData>) : DiffUtil.Callback(){
+    class BookmarkDiffUtil (private val oldList : List<SearchData>, private val newList: List<SearchData>) : DiffUtil.Callback(){
         override fun getOldListSize(): Int {
             return oldList.size
         }

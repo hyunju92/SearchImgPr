@@ -48,7 +48,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun initData() {
         val searchData = intent.getParcelableExtra<SearchData>(CLICKED_DATA_FOR_DETAIL)
-        if(searchData!=null) detailViewModel.setImgData(searchData)
+        if(searchData!=null) detailViewModel.setData(searchData)
     }
 
     private fun openLinkUrl(linkUrl: String) {
