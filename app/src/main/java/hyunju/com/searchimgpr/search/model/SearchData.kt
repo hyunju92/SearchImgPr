@@ -10,7 +10,7 @@ data class SearchData(
     val imgUrl: String,
     val dateTime: String,
     val imgType: String,
-    val isKept: ObservableField<Boolean>
-) : Parcelable {
-
-}
+    val isKept: ObservableField<Boolean>,
+    val linkUrl: String,
+    val title: String
+) : Parcelable

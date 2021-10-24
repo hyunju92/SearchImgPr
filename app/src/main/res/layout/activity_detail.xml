@@ -21,11 +21,11 @@
 
         <ImageView
             android:id="@+id/detailImg"
-            setImgUri="@{vm.searchData.thumbnailUrl}"
+            setImgUri="@{vm.searchData.imgUrl}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/detailBookmark"
+            app:layout_constraintBottom_toTopOf="@+id/moveText"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -33,11 +33,36 @@
             selected="@{vm.searchData.isKept()}"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_margin="12dp"
             android:onClick="@{() -> vm.onBookmarkClicked()}"
             android:src="@drawable/img_bookmark_selector"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/moveText" />
+
+        <TextView
+            android:id="@+id/moveText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginBottom="4dp"
+            android:onClick="@{() -> vm.imgClicked(vm.searchData.linkUrl)}"
+            android:text="[클릭] 사이트로 이동하기"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/detailTitle"
+            app:layout_constraintEnd_toStartOf="@+id/detailBookmark"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/detailTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="18dp"
+            android:text="@{vm.searchData.title}"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/detailBookmark"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

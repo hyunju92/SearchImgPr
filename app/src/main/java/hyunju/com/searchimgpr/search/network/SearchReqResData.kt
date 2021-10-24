@@ -43,7 +43,9 @@ fun List<ImageDocuments>.imgToListSearchUi(): List<SearchData> {
             it.image_url,
             it.datetime,
             "IMG",
-            ObservableField(false)
+            ObservableField(false),
+            it.doc_url,
+            it.collection + "-" + it.display_sitename
         )
     }
 }
@@ -52,10 +54,12 @@ fun List<VclipDocuments>.vclipToListSearchUi(): List<SearchData> {
     return map {
         SearchData(
             it.thumbnail,
-            it.url,
+            it.thumbnail,
             it.datetime,
             "IMG",
-            ObservableField(false)
+            ObservableField(false),
+            it.url,
+            it.author + "-" + it.title
         )
     }
 }

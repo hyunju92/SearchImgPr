@@ -66,8 +66,6 @@ class BookmarkFragment : Fragment() {
         eventDisposable = bookmarkViewModel.uiEvent.subscribe {
             handleUiEvent(it)
         }
-        sharedViewModel.testSetBookrmarkList()
-
     }
 
     private fun handleUiEvent(uiEvent: BookmarkUiEvent) = when(uiEvent) {
