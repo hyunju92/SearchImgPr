@@ -12,15 +12,19 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.FragmentKeepBinding
 import hyunju.com.searchimgpr.detail.view.DetailActivity
 import hyunju.com.searchimgpr.keep.vm.KeepUiEvent
 import hyunju.com.searchimgpr.keep.vm.KeepViewModel
 import hyunju.com.searchimgpr.main.vm.SharedViewModel
+import hyunju.com.searchimgpr.util.replaceAll
 import io.reactivex.rxjava3.disposables.Disposable
 
+@AndroidEntryPoint
 class KeepFragment : Fragment() {
 
     private lateinit var binding: FragmentKeepBinding
@@ -36,7 +40,7 @@ class KeepFragment : Fragment() {
     companion object {
         const val IMG_STR = "imgStr"
         const val IS_MARKED = "isMarked"
-        const val START_DETAIL_FROM_KEEP = 1000
+        const val SEARCH_DATA = "searchData"
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -57,16 +61,19 @@ class KeepFragment : Fragment() {
         binding.keepRv.run {
             val spanCount = resources.getInteger(R.integer.img_list_span_count)
             layoutManager = GridLayoutManager(requireContext(), spanCount)
-            adapter = KeepImgAdapter(keepViewModel, sharedViewModel)
+            adapter = KeepAdapter(keepViewModel, sharedViewModel)
         }
-
-        sharedViewModel.testSetKeepImgList()
     }
 
     private fun observeLiveData() {
         eventDisposable = keepViewModel.uiEvent.subscribe {
             handleUiEvent(it)
         }
+        sharedViewModel.keepSearchDataList.observe(viewLifecycleOwner, Observer {
+            binding.keepRv.replaceAll(it)
+        })
+        sharedViewModel.testSetKeepImgList()
+
     }
 
     private fun handleUiEvent(uiEvent: KeepUiEvent) = when(uiEvent) {
@@ -78,6 +85,10 @@ class KeepFragment : Fragment() {
         Intent(requireActivity(), DetailActivity::class.java).apply {
             putExtra(IMG_STR, imgStr)
             putExtra(IS_MARKED, true)
+            //            add("https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA5MjZfMjgw%2FMDAxNjMyNjE4MDc5NzE3.CIb_BrZ3n5N-wNLKWi0sJf05T8UXedjoDlyxRhqaMW8g.am87-tm1N34zMW2BsN0hPX_vtIvP_eGnZzeAUluXppwg.JPEG.leeeunhye010118%2F1632618076387.jpg&type=sc960_832")
+//            putExtra(SEARCH_DATA, testData)
+
+
         }.let {
             startDetail.launch(it)
         }
@@ -93,7 +104,7 @@ class KeepFragment : Fragment() {
     }
 
     private fun removeBookmark(imgStr: String) {
-        sharedViewModel.removeImgUri(imgStr)
+        sharedViewModel.removeKeepList(imgStr)
     }
 
     override fun onDestroyView() {

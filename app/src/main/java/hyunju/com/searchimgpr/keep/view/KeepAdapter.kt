@@ -9,23 +9,25 @@ import hyunju.com.searchimgpr.R
 import hyunju.com.searchimgpr.databinding.SubviewKeepImgBinding
 import hyunju.com.searchimgpr.keep.vm.KeepViewModel
 import hyunju.com.searchimgpr.main.vm.SharedViewModel
+import hyunju.com.searchimgpr.search.model.SearchData
 import hyunju.com.searchimgpr.util.RecyclerAdapter
 
-class KeepImgAdapter(private val keepViewModel: KeepViewModel, private val sharedViewModel: SharedViewModel) : RecyclerView.Adapter<KeepImgAdapter.KeepImgViewHolder>(), RecyclerAdapter<String>{
-    private var imgList : ArrayList<String>? = null
+class KeepAdapter(private val keepViewModel: KeepViewModel, private val sharedViewModel: SharedViewModel)
+    : RecyclerView.Adapter<KeepAdapter.KeepImgViewHolder>(), RecyclerAdapter<SearchData>{
+    private var searchDataList : ArrayList<SearchData>? = null
 
-    override fun replaceAll(recyclerView: RecyclerView, listItem: List<String>?) {
+    override fun replaceAll(recyclerView: RecyclerView, listItem: List<SearchData>?) {
         listItem?.let { newList ->
-            if(imgList == null) {
-                imgList?.clear()
-                imgList = listItem as ArrayList<String>
+            if(searchDataList == null) {
+                searchDataList?.clear()
+                searchDataList = listItem as ArrayList<SearchData>
 
                 notifyDataSetChanged()
 
             } else {
-                val diffResult = DiffUtil.calculateDiff(KeepImgDiffUtil(imgList!!, newList))
-                imgList!!.clear()
-                imgList!!.addAll(newList)
+                val diffResult = DiffUtil.calculateDiff(KeepImgDiffUtil(searchDataList!!, newList))
+                searchDataList!!.clear()
+                searchDataList!!.addAll(newList)
 
                 diffResult.dispatchUpdatesTo(this)
             }
@@ -46,20 +48,20 @@ class KeepImgAdapter(private val keepViewModel: KeepViewModel, private val share
     }
 
     override fun onBindViewHolder(holder: KeepImgViewHolder, position: Int) {
-        holder.bind(imgList!![position])
+        holder.bind(searchDataList!![position])
     }
 
     override fun getItemCount(): Int {
-        return imgList?.size?:0
+        return searchDataList?.size?:0
     }
 
     class KeepImgViewHolder(private val binding: SubviewKeepImgBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(imgUrl: String) {
-            binding.imgUri = imgUrl
+        fun bind(data: SearchData) {
+            binding.imgUri = data.thumbnailUrl
         }
     }
 
-    class KeepImgDiffUtil (private val oldList : List<String>, private val newList: List<String>) : DiffUtil.Callback(){
+    class KeepImgDiffUtil (private val oldList : List<SearchData>, private val newList: List<SearchData>) : DiffUtil.Callback(){
         override fun getOldListSize(): Int {
             return oldList.size
         }
@@ -69,7 +71,7 @@ class KeepImgAdapter(private val keepViewModel: KeepViewModel, private val share
         }
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return true
+            return oldList[oldItemPosition].thumbnailUrl == newList[newItemPosition].thumbnailUrl
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

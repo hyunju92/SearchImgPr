@@ -20,9 +20,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
     fun searchText(searchText: String) {
         searchText.let {
-            if(it.isNotEmpty() && it.isNotBlank()) {
-                uiEvent.onNext(SearchUiEvent.SearchText(searchText))
-            }
+            if(it.isNotEmpty() && it.isNotBlank()) { uiEvent.onNext(SearchUiEvent.SearchText(it)) }
         }
     }
 
