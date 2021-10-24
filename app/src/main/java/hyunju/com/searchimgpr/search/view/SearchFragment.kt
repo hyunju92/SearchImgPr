@@ -75,6 +75,7 @@ class SearchFragment : Fragment() {
     private fun handleUiEvent(uiEvent: SearchUiEvent?) = when (uiEvent) {
         is SearchUiEvent.SearchText -> loadSearchList(uiEvent.searchText)
         is SearchUiEvent.MoveDetail -> moveDetail(uiEvent.data)
+        is SearchUiEvent.ChangeBookmarkState -> sharedViewModel.onClickBookmark(uiEvent.data)
         else -> {}
     }
 
@@ -87,25 +88,17 @@ class SearchFragment : Fragment() {
     }
 
     private fun moveDetail(data: SearchData) {
-        currentClickedData = data
         Intent(requireActivity(), DetailActivity::class.java).apply {
             putExtra(BookmarkFragment.SEARCH_DATA, data)
-
         }.let {
             startDetail.launch(it)
         }
     }
 
-    private var currentClickedData : SearchData? = null
     private fun resultStartDetail(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
-            val searchData = result.data?.getParcelableExtra<SearchData>(BookmarkFragment.SEARCH_DATA)
-
-            if (searchData != null && currentClickedData != null
-                && currentClickedData?.isKept?.get() != searchData.isKept.get()) {
-                sharedViewModel.onClickBookmark(currentClickedData!!)
-            }
-
+            val resultData = result.data?.getParcelableExtra<SearchData>(BookmarkFragment.SEARCH_DATA)
+            searchViewModel.resultDetail(resultData)
         }
     }
 

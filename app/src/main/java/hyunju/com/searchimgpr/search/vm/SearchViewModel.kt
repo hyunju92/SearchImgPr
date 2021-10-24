@@ -17,6 +17,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val searchRepository: SearchRepository) : ViewModel(){
 
     val uiEvent = PublishSubject.create<SearchUiEvent>()
+    private var currentClickedData : SearchData? = null
 
     fun searchText(searchText: String) {
         searchText.let {
@@ -31,12 +32,22 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     }
 
     fun showDetail(data: SearchData) {
+        currentClickedData = data
         uiEvent.onNext(SearchUiEvent.MoveDetail(data))
     }
+
+    fun resultDetail(data: SearchData?) {
+        if (data != null && currentClickedData != null
+            && currentClickedData?.isKept?.get() != data.isKept.get()) {
+            uiEvent.onNext(SearchUiEvent.ChangeBookmarkState(currentClickedData!!))
+        }
+    }
+
 }
 
 sealed class SearchUiEvent {
     data class SearchText(val searchText: String) : SearchUiEvent()
     data class MoveDetail(val data: SearchData) : SearchUiEvent()
+    data class ChangeBookmarkState(val data: SearchData) : SearchUiEvent()
 
 }
