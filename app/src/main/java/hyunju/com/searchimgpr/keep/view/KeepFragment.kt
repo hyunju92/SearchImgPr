@@ -12,7 +12,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import hyunju.com.searchimgpr.R
@@ -22,7 +21,6 @@ import hyunju.com.searchimgpr.keep.vm.KeepUiEvent
 import hyunju.com.searchimgpr.keep.vm.KeepViewModel
 import hyunju.com.searchimgpr.main.vm.SharedViewModel
 import hyunju.com.searchimgpr.search.model.SearchData
-import hyunju.com.searchimgpr.util.replaceAll
 import io.reactivex.rxjava3.disposables.Disposable
 
 @AndroidEntryPoint
@@ -39,8 +37,7 @@ class KeepFragment : Fragment() {
     }
 
     companion object {
-        const val IS_MARKED = "isMarked"
-        const val SEARCH_DATA = "searchData"
+        const val SEARCH_DATA = "SEARCH_DATA"
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -69,9 +66,6 @@ class KeepFragment : Fragment() {
         eventDisposable = keepViewModel.uiEvent.subscribe {
             handleUiEvent(it)
         }
-        sharedViewModel.keepSearchDataList.observe(viewLifecycleOwner, Observer {
-            binding.keepRv.replaceAll(it)
-        })
         sharedViewModel.testSetKeepImgList()
 
     }
@@ -82,7 +76,6 @@ class KeepFragment : Fragment() {
 
     private fun moveDetail(data : SearchData) {
         Intent(requireActivity(), DetailActivity::class.java).apply {
-            putExtra(IS_MARKED, true)
             putExtra(SEARCH_DATA, data)
 
         }.let {
@@ -92,16 +85,13 @@ class KeepFragment : Fragment() {
 
     private fun startDetailResult(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
-            val isMarked = result.data?.getBooleanExtra(IS_MARKED, false)
             val searchData = result.data?.getParcelableExtra<SearchData>(SEARCH_DATA)
 
-            if(isMarked == false && searchData != null) removeBookmark(searchData)
+            if(searchData?.isKept?.get() == false) sharedViewModel.removeKeepList(searchData)
+
         }
     }
 
-    private fun removeBookmark(data: SearchData) {
-        sharedViewModel.removeKeepList(data)
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

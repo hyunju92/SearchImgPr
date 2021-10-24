@@ -56,5 +56,4 @@ class SearchImgAdapter(private val searchViewModel: SearchViewModel, private val
     }
 
 
-
 }

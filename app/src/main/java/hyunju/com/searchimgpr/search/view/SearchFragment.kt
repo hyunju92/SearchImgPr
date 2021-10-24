@@ -43,6 +43,7 @@ class SearchFragment : Fragment() {
         startDetailResult(result)
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<FragmentSearchBinding>(inflater, R.layout.fragment_search, container, false).apply {
             sharedVm = sharedViewModel
@@ -71,7 +72,6 @@ class SearchFragment : Fragment() {
         }
     }
 
-
     private fun handleUiEvent(uiEvent: SearchUiEvent?) = when (uiEvent) {
         is SearchUiEvent.SearchText -> loadSearchList(uiEvent.searchText)
         is SearchUiEvent.MoveDetail -> moveDetail(uiEvent.data)
@@ -87,27 +87,26 @@ class SearchFragment : Fragment() {
     }
 
     private fun moveDetail(data: SearchData) {
+        currentClickedData = data
         Intent(requireActivity(), DetailActivity::class.java).apply {
-            putExtra(KeepFragment.IS_MARKED, true)
             putExtra(KeepFragment.SEARCH_DATA, data)
 
         }.let {
             startDetail.launch(it)
         }
-
     }
 
+    private var currentClickedData : SearchData? = null
     private fun startDetailResult(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
-            val isMarked = result.data?.getBooleanExtra(KeepFragment.IS_MARKED, false)
             val searchData = result.data?.getParcelableExtra<SearchData>(KeepFragment.SEARCH_DATA)
 
-            if(isMarked == false && searchData != null) removeBookmark(searchData)
-        }
-    }
+            if (searchData != null && currentClickedData != null
+                && currentClickedData?.isKept?.get() != searchData.isKept.get()) {
+                sharedViewModel.onClickBookmark(currentClickedData!!)
+            }
 
-    private fun removeBookmark(data: SearchData) {
-        sharedViewModel.removeKeepList(data)
+        }
     }
 
     override fun onDestroyView() {

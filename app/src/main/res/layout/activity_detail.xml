@@ -30,7 +30,7 @@
 
         <ImageView
             android:id="@+id/detailBookmark"
-            selected="@{vm.isMarked()}"
+            selected="@{vm.searchData.isKept()}"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="12dp"

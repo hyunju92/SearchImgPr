@@ -1,15 +1,12 @@
 package hyunju.com.searchimgpr.main.vm
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import hyunju.com.searchimgpr.search.model.SearchData
 
 class SharedViewModel : ViewModel() {
 
-    private val _keepSearchDataList = MutableLiveData<List<SearchData>>()
-    val keepSearchDataList: LiveData<List<SearchData>>
-        get() = _keepSearchDataList
+    val keepSearchList = ObservableField<List<SearchData>>()
 
     fun testSetKeepImgList() {
 //        val testList = mutableListOf<String>().apply {
@@ -24,25 +21,44 @@ class SharedViewModel : ViewModel() {
 //            add("https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA5MjZfMjgw%2FMDAxNjMyNjE4MDc5NzE3.CIb_BrZ3n5N-wNLKWi0sJf05T8UXedjoDlyxRhqaMW8g.am87-tm1N34zMW2BsN0hPX_vtIvP_eGnZzeAUluXppwg.JPEG.leeeunhye010118%2F1632618076387.jpg&type=sc960_832")
 //        }
 //
-
         val testData = SearchData(
             imgUrl = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA5MjZfMjgw%2FMDAxNjMyNjE4MDc5NzE3.CIb_BrZ3n5N-wNLKWi0sJf05T8UXedjoDlyxRhqaMW8g.am87-tm1N34zMW2BsN0hPX_vtIvP_eGnZzeAUluXppwg.JPEG.leeeunhye010118%2F1632618076387.jpg&type=sc960_832",
             thumbnailUrl = "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMTA5MjZfMjgw%2FMDAxNjMyNjE4MDc5NzE3.CIb_BrZ3n5N-wNLKWi0sJf05T8UXedjoDlyxRhqaMW8g.am87-tm1N34zMW2BsN0hPX_vtIvP_eGnZzeAUluXppwg.JPEG.leeeunhye010118%2F1632618076387.jpg&type=sc960_832",
             dateTime = "21211024",
-            imgType = "IMG"
+            imgType = "IMG",
+            isKept = ObservableField(false)
         )
 
         addKeepList(testData)
     }
 
     fun addKeepList(data: SearchData) {
-        val newList = _keepSearchDataList.value?.toMutableList()?.apply { add(data) }?: arrayListOf(data)
-        _keepSearchDataList.value = newList
+        val newList = keepSearchList.get()?.toMutableList()?.apply { add(data) }?: arrayListOf(data)
+        keepSearchList.set(newList)
+
+        data.isKept.set(true)
     }
 
     fun removeKeepList(data: SearchData) {
-        _keepSearchDataList.value?.toMutableList()?.apply { remove(data) }?.let { newList ->
-            _keepSearchDataList.value = newList
-        }
+        val newList = keepSearchList.get()?.toMutableList()?.apply { removeIf { it.thumbnailUrl == data.thumbnailUrl } }
+        newList?.let { keepSearchList.set(newList) }
+
+        data.isKept.set(false)
     }
+
+    fun onClickBookmark(data: SearchData) {
+        data.isKept.get()?.let { currentIsKept ->
+            if(currentIsKept) {
+                removeKeepList(data)
+            } else {
+                addKeepList(data)
+            }
+        }
+
+    }
+
+    fun isKept(data: SearchData) : Boolean{
+        return keepSearchList.get()?.contains(data)?:false
+    }
+
 }

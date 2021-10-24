@@ -1,6 +1,7 @@
 package hyunju.com.searchimgpr.search.network
 
 import android.os.Build
+import androidx.databinding.ObservableField
 import hyunju.com.searchimgpr.search.model.SearchData
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,7 +42,8 @@ fun List<ImageDocuments>.imgToListSearchUi(): List<SearchData> {
             it.thumbnail_url,
             it.image_url,
             it.datetime,
-            "IMG"
+            "IMG",
+            ObservableField(false)
         )
     }
 }
@@ -52,7 +54,8 @@ fun List<VclipDocuments>.vclipToListSearchUi(): List<SearchData> {
             it.thumbnail,
             it.url,
             it.datetime,
-            "IMG"
+            "IMG",
+            ObservableField(false)
         )
     }
 }

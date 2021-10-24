@@ -47,7 +47,7 @@
         <ImageView
             android:onClick="@{() -> sharedVm.removeKeepList(data)}"
             android:id="@+id/subviewImgBookmark"
-            selected="@{true}"
+            selected="@{data.isKept()}"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/img_bookmark_selector"

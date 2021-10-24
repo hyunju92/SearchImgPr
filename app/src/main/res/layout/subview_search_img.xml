@@ -41,8 +41,9 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:onClick="@{() -> sharedVm.onClickBookmark(data)}"
             android:id="@+id/subviewImgBookmark"
-            selected="@{true}"
+            selected="@{data.isKept()}"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:scaleType="fitXY"
