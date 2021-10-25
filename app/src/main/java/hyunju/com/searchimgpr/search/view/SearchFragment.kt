@@ -3,7 +3,6 @@ package hyunju.com.searchimgpr.search.view
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,7 +68,6 @@ class SearchFragment : Fragment() {
     private fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             searchViewModel.searchList.collectLatest {
-                Log.d("testSearchObserve", "searchList latest init")
                 (binding.searchRv.adapter as SearchImgAdapter).submitData(it)
             }
         }

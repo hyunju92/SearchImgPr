@@ -21,21 +21,21 @@ class SearchRepository @Inject constructor(
     }
 
     fun loadSearchListByFLow(searchText: String): Flow<PagingData<SearchData>> {
-        val pageConfig = PagingConfig(pageSize = DEFAULT_PAGE_SIZE, enablePlaceholders = true)
-
-        return Pager(
-            config = pageConfig,
-            pagingSourceFactory = { SearchPagingSource(searchText, searchNetworkApi) }
-        ).flow
+        return getPager(searchText).flow
     }
 
     fun loadSearchListByLiveData(searchText: String): LiveData<PagingData<SearchData>> {
+        return getPager(searchText).liveData
+    }
+
+    private fun getPager(searchText: String): Pager<Int, SearchData> {
         val pageConfig = PagingConfig(pageSize = DEFAULT_PAGE_SIZE, enablePlaceholders = true)
 
         return Pager(
             config = pageConfig,
             pagingSourceFactory = { SearchPagingSource(searchText, searchNetworkApi) }
-        ).liveData
+        )
     }
+
 
 }

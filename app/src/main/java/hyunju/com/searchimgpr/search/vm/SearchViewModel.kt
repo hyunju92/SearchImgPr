@@ -27,11 +27,9 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
             .cachedIn(viewModelScope)
     }
 
-    fun searchText(searchText: String) {
-        searchText.let {
-            if(it.isNotEmpty() && it.isNotBlank()) {
-                searchTextFlow.value = searchText
-            }
+    fun searchText(searchText: String?) {
+        searchText?.let {
+            if(it.isNotEmpty() && it.isNotBlank()) { searchTextFlow.value = searchText }
         }
     }
 
