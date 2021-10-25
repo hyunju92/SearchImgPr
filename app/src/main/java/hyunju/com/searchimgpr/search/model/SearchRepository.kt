@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.liveData
 import hyunju.com.searchimgpr.search.network.SearchNetworkApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -19,7 +20,16 @@ class SearchRepository @Inject constructor(
         const val DEFAULT_PAGE_SIZE = 20
     }
 
-    fun loadSearchList(searchText: String): LiveData<PagingData<SearchData>> {
+    fun loadSearchListByFLow(searchText: String): Flow<PagingData<SearchData>> {
+        val pageConfig = PagingConfig(pageSize = DEFAULT_PAGE_SIZE, enablePlaceholders = true)
+
+        return Pager(
+            config = pageConfig,
+            pagingSourceFactory = { SearchPagingSource(searchText, searchNetworkApi) }
+        ).flow
+    }
+
+    fun loadSearchListByLiveData(searchText: String): LiveData<PagingData<SearchData>> {
         val pageConfig = PagingConfig(pageSize = DEFAULT_PAGE_SIZE, enablePlaceholders = true)
 
         return Pager(

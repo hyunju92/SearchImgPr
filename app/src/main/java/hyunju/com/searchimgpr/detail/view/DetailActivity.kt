@@ -30,11 +30,11 @@ class DetailActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView<ActivityDetailBinding>(this, R.layout.activity_detail).apply {
             vm = detailViewModel
         }
-        observeLiveData()
+        observeData()
         initData()
     }
 
-    private fun observeLiveData() {
+    private fun observeData() {
         eventDisposable = detailViewModel.uiEvent.subscribe {
             handleUiEvent(it)
         }

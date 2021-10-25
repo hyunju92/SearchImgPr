@@ -1,15 +1,15 @@
 package hyunju.com.searchimgpr.search.vm
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hyunju.com.searchimgpr.search.model.SearchRepository
 import hyunju.com.searchimgpr.search.model.SearchData
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -19,16 +19,20 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     val uiEvent = PublishSubject.create<SearchUiEvent>()
     private var currentClickedData : SearchData? = null
 
-    fun searchText(searchText: String) {
-        searchText.let {
-            if(it.isNotEmpty() && it.isNotBlank()) { uiEvent.onNext(SearchUiEvent.SearchText(it)) }
-        }
+    // search list
+    private val searchTextFlow = MutableStateFlow("")
+    val searchList = searchTextFlow.flatMapLatest { searchText ->
+        searchRepository
+            .loadSearchListByFLow(searchText)
+            .cachedIn(viewModelScope)
     }
 
-    fun getSearchList(searchText: String): LiveData<PagingData<SearchData>> {
-        return searchRepository
-            .loadSearchList(searchText)
-            .cachedIn(viewModelScope)
+    fun searchText(searchText: String) {
+        searchText.let {
+            if(it.isNotEmpty() && it.isNotBlank()) {
+                searchTextFlow.value = searchText
+            }
+        }
     }
 
     fun showDetail(data: SearchData) {
@@ -46,7 +50,6 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 }
 
 sealed class SearchUiEvent {
-    data class SearchText(val searchText: String) : SearchUiEvent()
     data class MoveDetail(val data: SearchData) : SearchUiEvent()
     data class ChangeBookmarkState(val data: SearchData) : SearchUiEvent()
 

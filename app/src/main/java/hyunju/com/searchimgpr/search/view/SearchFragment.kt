@@ -3,6 +3,7 @@ package hyunju.com.searchimgpr.search.view
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +26,7 @@ import hyunju.com.searchimgpr.search.vm.SearchUiEvent
 import hyunju.com.searchimgpr.search.vm.SearchViewModel
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
@@ -43,7 +44,6 @@ class SearchFragment : Fragment() {
         resultStartDetail(result)
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<FragmentSearchBinding>(inflater, R.layout.fragment_search, container, false).apply {
             sharedVm = sharedViewModel
@@ -55,7 +55,7 @@ class SearchFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        observeLiveData()
+        observeData()
     }
 
     private fun initView() {
@@ -66,25 +66,22 @@ class SearchFragment : Fragment() {
         }
     }
 
-    private fun observeLiveData() {
+    private fun observeData() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            searchViewModel.searchList.collectLatest {
+                Log.d("testSearchObserve", "searchList latest init")
+                (binding.searchRv.adapter as SearchImgAdapter).submitData(it)
+            }
+        }
         eventDisposable = searchViewModel.uiEvent.subscribe {
             handleUiEvent(it)
         }
     }
 
     private fun handleUiEvent(uiEvent: SearchUiEvent?) = when (uiEvent) {
-        is SearchUiEvent.SearchText -> loadSearchList(uiEvent.searchText)
         is SearchUiEvent.MoveDetail -> moveDetail(uiEvent.data)
         is SearchUiEvent.ChangeBookmarkState -> sharedViewModel.onClickBookmark(uiEvent.data)
         else -> {}
-    }
-
-    private fun loadSearchList(searchText: String) {
-        searchViewModel.getSearchList(searchText).observe(viewLifecycleOwner, Observer {
-            lifecycleScope.launch {
-                (binding.searchRv.adapter as SearchImgAdapter).submitData(it)
-            }
-        })
     }
 
     private fun moveDetail(data: SearchData) {

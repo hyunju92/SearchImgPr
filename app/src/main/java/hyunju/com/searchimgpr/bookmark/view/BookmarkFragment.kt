@@ -31,6 +31,7 @@ class BookmarkFragment : Fragment() {
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val bookmarkViewModel: BookmarkViewModel by viewModels()
+
     private var eventDisposable: Disposable? = null
 
     private val startDetail = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -48,7 +49,7 @@ class BookmarkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        observeLiveData()
+        observeData()
     }
 
     private fun initView() {
@@ -59,7 +60,7 @@ class BookmarkFragment : Fragment() {
         }
     }
 
-    private fun observeLiveData() {
+    private fun observeData() {
         eventDisposable = bookmarkViewModel.uiEvent.subscribe {
             handleUiEvent(it)
         }
