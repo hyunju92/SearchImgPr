@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initView() {
         val tabs = listOf(SearchFragment(), BookmarkFragment())
-        val tabNames = listOf("검색", "보관")
+        val tabNames = listOf(getString(R.string.tab1_name), getString(R.string.tab2_name))
 
         binding.mainViewPager.apply {
             adapter = MainViewPagerAdapter(tabs, this@MainActivity)

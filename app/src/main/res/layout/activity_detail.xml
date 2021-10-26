@@ -46,7 +46,7 @@
             android:layout_marginStart="18dp"
             android:layout_marginBottom="4dp"
             android:onClick="@{() -> vm.onLinkClicked(vm.searchData.linkUrl)}"
-            android:text="[클릭] 사이트로 이동하기"
+            android:text="@string/detail_move_text"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/detailTitle"

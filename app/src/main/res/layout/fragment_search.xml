@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:onClick="@{() -> searchVm.searchText(searchEditText.getText().toString())}"
-            android:text="검색"
+            android:text="@string/search_btn_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/searchEditText"
             app:layout_constraintTop_toTopOf="parent"
