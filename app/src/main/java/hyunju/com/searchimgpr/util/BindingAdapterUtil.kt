@@ -18,15 +18,6 @@ fun matchHeightToDeviceWidthDivCount(view: View, boolean: Boolean) {
     view.layoutParams = layoutParams
 }
 
-
-@BindingAdapter("setOnLongClick")
-fun setOnLongClick(view: View, func: () -> Unit) {
-    view.setOnLongClickListener {
-        func()
-        return@setOnLongClickListener true
-    }
-}
-
 interface RecyclerAdapter<T> {
     fun replaceAll(recyclerView: RecyclerView, listItem: List<T>?)
 }
