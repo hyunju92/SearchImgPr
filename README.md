@@ -5,4 +5,4 @@
 >   3. 이미지 상세 - 리스트의 이미지를 클릭하여 상세 화면으로 이동하기.
                     해당 이미지의 타이틀 보여주기. 링크 클릭하여 이동 (상세 화면)
 ## 프로젝트 구조
-![구조]()
+![구조](https://github.com/hyunju92/SearchImgPr/app/src/main/res/drawable/project_structure.png)
