@@ -3,6 +3,7 @@ package hyunju.com.searchimgpr.search.view
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +26,7 @@ import hyunju.com.searchimgpr.search.vm.SearchUiEvent
 import hyunju.com.searchimgpr.search.vm.SearchViewModel
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -45,6 +47,7 @@ class SearchFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate<FragmentSearchBinding>(inflater, R.layout.fragment_search, container, false).apply {
+            lifecycleOwner = this@SearchFragment
             sharedVm = sharedViewModel
             searchVm = searchViewModel
         }
@@ -66,10 +69,17 @@ class SearchFragment : Fragment() {
     }
 
     private fun observeData() {
+        Log.d("testFlow", "observeData: init")
+
         viewLifecycleOwner.lifecycleScope.launch {
-            searchViewModel.searchList.collectLatest {
-                (binding.searchRv.adapter as SearchImgAdapter).submitData(it)
+            Log.d("testFlow", "observeData: lifecycleScope")
+
+            searchViewModel.searchList.collect {
+                if(it != null) {
+                    (binding.searchRv.adapter as SearchImgAdapter).submitData(it)
+                }
             }
+
         }
         eventDisposable = searchViewModel.uiEvent.subscribe {
             handleUiEvent(it)
