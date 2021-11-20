@@ -1,6 +1,5 @@
 package hyunju.com.searchimgpr.search.vm
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -13,7 +12,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,20 +27,17 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
     val searchList : StateFlow<PagingData<SearchData>?> = _searchList
 
     fun searchText(searchText: String?) {
-        Log.d("testFlow", "searchText: $searchText")
         searchText?.let {
-            if(it.isNotEmpty() && it.isNotBlank()) {
-                viewModelScope.launch {
+            if(it.isEmpty() || it.isBlank())return@let
 
-                    searchRepository
-                        .loadSearchListByFLow(searchText)
-                        .cachedIn(viewModelScope)
-                        .collect {
-                            _searchList.value = it
-                        }
+            viewModelScope.launch {
+                searchRepository
+                    .loadSearchListByFLow(searchText)
+                    .cachedIn(viewModelScope)
+                    .collect {
+                        _searchList.value = it
+                    }
 
-
-                }
             }
         }
     }
