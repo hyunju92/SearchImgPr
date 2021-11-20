@@ -21,7 +21,7 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
 
     // search list
     private val searchTextFlow = MutableStateFlow("")
-    val searchList = searchTextFlow.flatMapLatest { searchText ->
+    val searchList = searchTextFlow.flatMapLatest { searchText ->   // emit호출 시, data가 흐름
         searchRepository
             .loadSearchListByFLow(searchText)
             .cachedIn(viewModelScope)

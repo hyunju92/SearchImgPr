@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -68,6 +69,8 @@ class SearchFragment : Fragment() {
     private fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             searchViewModel.searchList.collectLatest {
+                // collect
+                // data stream을 subscribe하는 onNExt
                 (binding.searchRv.adapter as SearchImgAdapter).submitData(it)
             }
         }
