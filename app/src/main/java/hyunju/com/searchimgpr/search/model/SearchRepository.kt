@@ -3,7 +3,9 @@ package hyunju.com.searchimgpr.search.model
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.rxjava2.observable
 import hyunju.com.searchimgpr.search.network.SearchNetworkApi
+import io.reactivex.Observable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -19,6 +21,10 @@ class SearchRepository @Inject constructor(
 
     fun loadSearchListByFLow(searchText: String): Flow<PagingData<SearchData>> {
         return getPager(searchText).flow
+    }
+
+    fun loadSearchListByObservable(searchText: String): Observable<PagingData<SearchData>> {
+        return getPager(searchText).observable
     }
 
     private fun getPager(searchText: String): Pager<Int, SearchData> {
