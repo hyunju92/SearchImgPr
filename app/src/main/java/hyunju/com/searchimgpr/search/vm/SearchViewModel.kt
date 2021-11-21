@@ -1,46 +1,67 @@
 package hyunju.com.searchimgpr.search.vm
 
+import android.util.Log
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.rxjava2.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hyunju.com.searchimgpr.search.model.SearchRepository
+import hyunju.com.searchimgpr.search.model.SearchRepositoryCoroutine
 import hyunju.com.searchimgpr.search.model.SearchData
+import hyunju.com.searchimgpr.search.model.SearchRepositoryRx
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val searchRepository: SearchRepository) : ViewModel(){
+class SearchViewModel @Inject constructor
+    (private val searchRepositoryCoroutine: SearchRepositoryCoroutine, private val serachRepositoryRx: SearchRepositoryRx) : ViewModel(){
 
     val uiEvent = PublishSubject.create<SearchUiEvent>()
     private var currentClickedData : SearchData? = null
 
     // search list
-    private val _searchList = MutableStateFlow<PagingData<SearchData>?>(null)
-    val searchList : StateFlow<PagingData<SearchData>?> = _searchList
+    private val searchTextFlow = MutableStateFlow("")
+
+    private val _searchList = searchTextFlow.flatMapLatest { searchText ->   // emit호출 시, data가 흐름
+        searchRepositoryCoroutine.loadSearchList(searchText)
+    }.cachedIn(viewModelScope)
+
+    val searchList = _searchList
+
+
+//    private var disposable : Disposable? = null
+//
+//    val searchListByObservable = ObservableField<PagingData<SearchData>>()
+//
+//    fun getSearchList(searchText: String) {
+//        disposable = serachRepositoryRx.loadSearchList(searchText)
+//            .cachedIn(viewModelScope)
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe {
+//                Log.d("testRxPaging", "getSearchList: init")
+//                searchListByObservable.set(it)
+//            }
+//    }
 
     fun searchText(searchText: String?) {
-        searchText?.let {
-            if(it.isEmpty() || it.isBlank())return@let
+        searchText?.let { text ->
+            if(text.isEmpty() || text.isBlank())return@let
 
-            viewModelScope.launch {
-                searchRepository
-                    .loadSearchListByFLow(searchText)
-                    .cachedIn(viewModelScope)
-                    .collect {
-                        _searchList.value = it
-                    }
-
-            }
+            searchTextFlow.value = searchText
+//            getSearchList(text)
         }
     }
+
 
     fun showDetail(data: SearchData) {
         currentClickedData = data
@@ -54,6 +75,11 @@ class SearchViewModel @Inject constructor(private val searchRepository: SearchRe
         }
     }
 
+
+    override fun onCleared() {
+        super.onCleared()
+//        disposable?.dispose()
+    }
 }
 
 sealed class SearchUiEvent {
