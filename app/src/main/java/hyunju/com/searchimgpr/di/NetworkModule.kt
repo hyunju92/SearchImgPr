@@ -7,7 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hyunju.com.searchimgpr.search.model.SearchRepository
-import hyunju.com.searchimgpr.search.model.SearchRepositoryCoroutine
+import hyunju.com.searchimgpr.search.model.corouine.SearchRepositoryCoroutine
 import hyunju.com.searchimgpr.search.network.SearchNetworkApiCoroutine
 import hyunju.com.searchimgpr.search.network.SearchNetworkApiRx
 import okhttp3.Interceptor

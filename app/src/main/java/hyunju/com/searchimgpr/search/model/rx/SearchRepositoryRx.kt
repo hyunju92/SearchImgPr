@@ -1,9 +1,11 @@
-package hyunju.com.searchimgpr.search.model
+package hyunju.com.searchimgpr.search.model.rx
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.rxjava2.observable
+import hyunju.com.searchimgpr.search.model.SearchData
+import hyunju.com.searchimgpr.search.model.SearchRepository
 import hyunju.com.searchimgpr.search.network.SearchNetworkApiRx
 import io.reactivex.Observable
 import kotlinx.coroutines.ExperimentalCoroutinesApi

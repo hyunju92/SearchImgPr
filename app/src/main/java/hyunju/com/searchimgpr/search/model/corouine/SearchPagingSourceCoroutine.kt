@@ -1,10 +1,11 @@
-package hyunju.com.searchimgpr.search.model
+package hyunju.com.searchimgpr.search.model.corouine
 
 import android.annotation.SuppressLint
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import hyunju.com.searchimgpr.search.model.SearchRepositoryCoroutine.Companion.DEFAULT_PAGE_INDEX
-import hyunju.com.searchimgpr.search.model.SearchRepositoryCoroutine.Companion.DEFAULT_PAGE_SIZE
+import hyunju.com.searchimgpr.search.model.SearchData
+import hyunju.com.searchimgpr.search.model.corouine.SearchRepositoryCoroutine.Companion.DEFAULT_PAGE_INDEX
+import hyunju.com.searchimgpr.search.model.corouine.SearchRepositoryCoroutine.Companion.DEFAULT_PAGE_SIZE
 import hyunju.com.searchimgpr.search.network.SearchNetworkApiCoroutine
 import hyunju.com.searchimgpr.search.network.compareDateStringForDec
 import hyunju.com.searchimgpr.search.network.imgToListSearchUi

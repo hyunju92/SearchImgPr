@@ -1,9 +1,10 @@
-package hyunju.com.searchimgpr.search.model
+package hyunju.com.searchimgpr.search.model.rx
 
 import androidx.paging.PagingState
 import androidx.paging.rxjava2.RxPagingSource
-import hyunju.com.searchimgpr.search.model.SearchRepositoryRx.Companion.DEFAULT_PAGE_INDEX
-import hyunju.com.searchimgpr.search.model.SearchRepositoryRx.Companion.DEFAULT_PAGE_SIZE
+import hyunju.com.searchimgpr.search.model.SearchData
+import hyunju.com.searchimgpr.search.model.rx.SearchRepositoryRx.Companion.DEFAULT_PAGE_INDEX
+import hyunju.com.searchimgpr.search.model.rx.SearchRepositoryRx.Companion.DEFAULT_PAGE_SIZE
 import hyunju.com.searchimgpr.search.network.*
 import io.reactivex.Observable
 import io.reactivex.Single

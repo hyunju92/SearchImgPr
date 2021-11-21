@@ -1,8 +1,10 @@
-package hyunju.com.searchimgpr.search.model
+package hyunju.com.searchimgpr.search.model.corouine
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import hyunju.com.searchimgpr.search.model.SearchData
+import hyunju.com.searchimgpr.search.model.SearchRepository
 import hyunju.com.searchimgpr.search.network.SearchNetworkApiCoroutine
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow

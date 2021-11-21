@@ -1,25 +1,16 @@
 package hyunju.com.searchimgpr.search.vm
 
-import android.util.Log
-import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.rxjava2.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hyunju.com.searchimgpr.search.model.SearchRepositoryCoroutine
+import hyunju.com.searchimgpr.search.model.corouine.SearchRepositoryCoroutine
 import hyunju.com.searchimgpr.search.model.SearchData
 import hyunju.com.searchimgpr.search.model.SearchRepository
-import hyunju.com.searchimgpr.search.model.SearchRepositoryRx
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
