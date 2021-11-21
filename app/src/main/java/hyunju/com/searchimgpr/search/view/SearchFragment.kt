@@ -74,14 +74,6 @@ class SearchFragment : Fragment() {
             }
         }
 
-//        searchViewModel.searchListByObservable.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback(){
-//            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-//                val data = searchViewModel.searchListByObservable.get()?:return
-//                (binding.searchRv.adapter as SearchImgAdapter).submitData(lifecycle, data)
-//            }
-//        })
-
-
         eventDisposable = searchViewModel.uiEvent.subscribe {
             handleUiEvent(it)
         }

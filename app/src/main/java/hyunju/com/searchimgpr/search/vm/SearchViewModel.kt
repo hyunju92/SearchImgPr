@@ -21,39 +21,21 @@ class SearchViewModel @Inject constructor
     val uiEvent = PublishSubject.create<SearchUiEvent>()
     private var currentClickedData : SearchData? = null
 
-    // search list
+    // saerch text
     private val searchTextFlow = MutableStateFlow("")
 
+    // search list
     private val _searchList = searchTextFlow.flatMapLatest { searchText ->   // emit호출 시, data가 흐름
         (searchRepository as SearchRepositoryCoroutine).loadSearchList(searchText)
     }.cachedIn(viewModelScope)
-
     val searchList = _searchList
-
-
-//    private var disposable : Disposable? = null
-//
-//    val searchListByObservable = ObservableField<PagingData<SearchData>>()
-//
-//    fun getSearchList(searchText: String) {
-//        disposable = (searchRepository as SearchRepositoryRx).loadSearchList(searchText)
-//            .cachedIn(viewModelScope)
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe {
-//                Log.d("testRxPaging", "getSearchList: init")
-//                searchListByObservable.set(it)
-//            }
-//    }
 
     fun searchText(searchText: String?) {
         searchText?.let { text ->
             if(text.isEmpty() || text.isBlank())return@let
-
             searchTextFlow.value = searchText
-//            getSearchList(text)
         }
     }
-
 
     fun showDetail(data: SearchData) {
         currentClickedData = data
@@ -67,11 +49,6 @@ class SearchViewModel @Inject constructor
         }
     }
 
-
-    override fun onCleared() {
-        super.onCleared()
-//        disposable?.dispose()
-    }
 }
 
 sealed class SearchUiEvent {
