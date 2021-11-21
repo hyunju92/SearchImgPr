@@ -2,6 +2,7 @@ package hyunju.com.searchimgpr.search.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hyunju.com.searchimgpr.search.model.corouine.SearchRepositoryCoroutine
@@ -9,7 +10,9 @@ import hyunju.com.searchimgpr.search.model.SearchData
 import hyunju.com.searchimgpr.search.model.SearchRepository
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
@@ -25,10 +28,9 @@ class SearchViewModel @Inject constructor
     private val searchTextFlow = MutableStateFlow("")
 
     // search list
-    private val _searchList = searchTextFlow.flatMapLatest { searchText ->   // emit호출 시, data가 흐름
+    val searchList = searchTextFlow.flatMapLatest { searchText ->   // emit호출 시, data가 흐름
         (searchRepository as SearchRepositoryCoroutine).loadSearchList(searchText)
     }.cachedIn(viewModelScope)
-    val searchList = _searchList
 
     fun searchText(searchText: String?) {
         searchText?.let { text ->
