@@ -8,13 +8,17 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import hyunju.com.searchimgpr.search.model.SearchRepository
 import hyunju.com.searchimgpr.search.model.corouine.SearchRepositoryCoroutine
+import hyunju.com.searchimgpr.search.model.rx.SearchRepositoryRx
 import hyunju.com.searchimgpr.search.network.SearchNetworkApiCoroutine
 import hyunju.com.searchimgpr.search.network.SearchNetworkApiRx
+import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
@@ -60,7 +64,7 @@ object NetworkModule {
         return Retrofit.Builder()
             .client(okHttpClient)
             .baseUrl(BASE_URL)
-//            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
             .addConverterFactory(gsonConvertFactory)
             .build()
     }
@@ -77,10 +81,11 @@ object NetworkModule {
         return retrofit.create(SearchNetworkApiRx::class.java)
     }
 
+    @ExperimentalCoroutinesApi
     @Singleton
     @Provides
-    fun provideSearchRepository(searchNetworkApiCoroutine: SearchNetworkApiCoroutine) : SearchRepository {
-        return SearchRepositoryCoroutine(searchNetworkApiCoroutine)
+    fun provideSearchRepository(searchNetworkApiRx: SearchNetworkApiRx) : SearchRepository {
+        return SearchRepositoryRx(searchNetworkApiRx)
     }
 
 }

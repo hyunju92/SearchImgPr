@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.Observable
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -25,8 +26,6 @@ import hyunju.com.searchimgpr.search.vm.SearchUiEvent
 import hyunju.com.searchimgpr.search.vm.SearchViewModel
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -67,20 +66,12 @@ class SearchFragment : Fragment() {
     }
 
     private fun observeData() {
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            searchViewModel.searchList.collectLatest {
-                (binding.searchRv.adapter as SearchImgAdapter).submitData(it)
+        searchViewModel.searchList.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback(){
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                val data = searchViewModel.searchList.get()?:return
+                (binding.searchRv.adapter as SearchImgAdapter).submitData(lifecycle, data)
             }
-        }
-
-//        searchViewModel.searchListByObservable.addOnPropertyChangedCallback(object: Observable.OnPropertyChangedCallback(){
-//            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-//                val data = searchViewModel.searchListByObservable.get()?:return
-//                (binding.searchRv.adapter as SearchImgAdapter).submitData(lifecycle, data)
-//            }
-//        })
-
+        })
 
         eventDisposable = searchViewModel.uiEvent.subscribe {
             handleUiEvent(it)

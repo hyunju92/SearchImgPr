@@ -1,16 +1,19 @@
 package hyunju.com.searchimgpr.search.vm
 
+import android.util.Log
+import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
+import androidx.paging.PagingData
+import androidx.paging.rxjava2.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hyunju.com.searchimgpr.search.model.corouine.SearchRepositoryCoroutine
 import hyunju.com.searchimgpr.search.model.SearchData
 import hyunju.com.searchimgpr.search.model.SearchRepository
+import hyunju.com.searchimgpr.search.model.rx.SearchRepositoryRx
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -22,38 +25,25 @@ class SearchViewModel @Inject constructor
     private var currentClickedData : SearchData? = null
 
     // search list
-    private val searchTextFlow = MutableStateFlow("")
-
-    private val _searchList = searchTextFlow.flatMapLatest { searchText ->   // emit호출 시, data가 흐름
-        (searchRepository as SearchRepositoryCoroutine).loadSearchList(searchText)
-    }.cachedIn(viewModelScope)
-
-    val searchList = _searchList
-
-
-//    private var disposable : Disposable? = null
-//
-//    val searchListByObservable = ObservableField<PagingData<SearchData>>()
-//
-//    fun getSearchList(searchText: String) {
-//        disposable = (searchRepository as SearchRepositoryRx).loadSearchList(searchText)
-//            .cachedIn(viewModelScope)
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe {
-//                Log.d("testRxPaging", "getSearchList: init")
-//                searchListByObservable.set(it)
-//            }
-//    }
+    private var disposable : Disposable? = null
+    val searchList = ObservableField<PagingData<SearchData>>()
 
     fun searchText(searchText: String?) {
         searchText?.let { text ->
             if(text.isEmpty() || text.isBlank())return@let
-
-            searchTextFlow.value = searchText
-//            getSearchList(text)
+            getSearchList(text)
         }
     }
 
+    private fun getSearchList(searchText: String) {
+        disposable = (searchRepository as SearchRepositoryRx).loadSearchList(searchText)
+            .cachedIn(viewModelScope)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                Log.d("testRxPaging", "getSearchList: init")
+                searchList.set(it)
+            }
+    }
 
     fun showDetail(data: SearchData) {
         currentClickedData = data
@@ -70,7 +60,7 @@ class SearchViewModel @Inject constructor
 
     override fun onCleared() {
         super.onCleared()
-//        disposable?.dispose()
+        disposable?.dispose()
     }
 }
 
