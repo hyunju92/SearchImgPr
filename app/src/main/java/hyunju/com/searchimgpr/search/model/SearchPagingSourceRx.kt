@@ -13,7 +13,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 class SearchPagingSourceRx(
     private val searchText: String,
-    private val searchNetworkApi: SearchNetworkRx
+    private val searchNetworkApiApi: SearchNetworkApiRx
 ) : RxPagingSource<Int, SearchData>() {
 
 
@@ -23,7 +23,7 @@ class SearchPagingSourceRx(
 
         val reqParam = getReqParam(searchText, page)
 
-        val imgRes = searchNetworkApi.getImageDataByObservable(reqParam)
+        val imgRes = searchNetworkApiApi.getImageDataByObservable(reqParam)
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.computation())
             .map {
@@ -32,7 +32,7 @@ class SearchPagingSourceRx(
                 Observable.fromIterable(list)
             }
 
-        val vclipRes = searchNetworkApi.getVclipDataByObservable(reqParam)
+        val vclipRes = searchNetworkApiApi.getVclipDataByObservable(reqParam)
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.computation())
             .map {

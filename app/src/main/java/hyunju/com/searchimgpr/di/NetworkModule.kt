@@ -6,15 +6,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import hyunju.com.searchimgpr.search.network.SearchNetworkApi
-import hyunju.com.searchimgpr.search.network.SearchNetworkRx
-import io.reactivex.schedulers.Schedulers
+import hyunju.com.searchimgpr.search.model.SearchRepository
+import hyunju.com.searchimgpr.search.model.SearchRepositoryCoroutine
+import hyunju.com.searchimgpr.search.network.SearchNetworkApiCoroutine
+import hyunju.com.searchimgpr.search.network.SearchNetworkApiRx
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
@@ -67,14 +67,20 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideSearchNetworkApi(retrofit: Retrofit): SearchNetworkApi {
-        return retrofit.create(SearchNetworkApi::class.java)
+    fun provideSearchNetworkApiCoroutine(retrofit: Retrofit): SearchNetworkApiCoroutine {
+        return retrofit.create(SearchNetworkApiCoroutine::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideSearchNetworkOvbservableApi(retrofit: Retrofit): SearchNetworkRx {
-        return retrofit.create(SearchNetworkRx::class.java)
+    fun provideSearchNetworkApiRx(retrofit: Retrofit): SearchNetworkApiRx {
+        return retrofit.create(SearchNetworkApiRx::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSearchRepository(searchNetworkApiCoroutine: SearchNetworkApiCoroutine) : SearchRepository {
+        return SearchRepositoryCoroutine(searchNetworkApiCoroutine)
     }
 
 }

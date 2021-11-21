@@ -10,6 +10,7 @@ import androidx.paging.rxjava2.cachedIn
 import dagger.hilt.android.lifecycle.HiltViewModel
 import hyunju.com.searchimgpr.search.model.SearchRepositoryCoroutine
 import hyunju.com.searchimgpr.search.model.SearchData
+import hyunju.com.searchimgpr.search.model.SearchRepository
 import hyunju.com.searchimgpr.search.model.SearchRepositoryRx
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -24,7 +25,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class SearchViewModel @Inject constructor
-    (private val searchRepositoryCoroutine: SearchRepositoryCoroutine, private val serachRepositoryRx: SearchRepositoryRx) : ViewModel(){
+    (private val searchRepository : SearchRepository) : ViewModel(){
 
     val uiEvent = PublishSubject.create<SearchUiEvent>()
     private var currentClickedData : SearchData? = null
@@ -33,7 +34,7 @@ class SearchViewModel @Inject constructor
     private val searchTextFlow = MutableStateFlow("")
 
     private val _searchList = searchTextFlow.flatMapLatest { searchText ->   // emit호출 시, data가 흐름
-        searchRepositoryCoroutine.loadSearchList(searchText)
+        (searchRepository as SearchRepositoryCoroutine).loadSearchList(searchText)
     }.cachedIn(viewModelScope)
 
     val searchList = _searchList
@@ -44,7 +45,7 @@ class SearchViewModel @Inject constructor
 //    val searchListByObservable = ObservableField<PagingData<SearchData>>()
 //
 //    fun getSearchList(searchText: String) {
-//        disposable = serachRepositoryRx.loadSearchList(searchText)
+//        disposable = (searchRepository as SearchRepositoryRx).loadSearchList(searchText)
 //            .cachedIn(viewModelScope)
 //            .observeOn(AndroidSchedulers.mainThread())
 //            .subscribe {

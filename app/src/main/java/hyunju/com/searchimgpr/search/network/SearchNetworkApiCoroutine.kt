@@ -5,7 +5,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.QueryMap
 
-interface SearchNetworkApi {
+interface SearchNetworkApiCoroutine {
     @GET("/v2/search/image")
     suspend fun getImageData(@QueryMap params: Map<String, String>): Response<ResImageData>
 
@@ -14,7 +14,7 @@ interface SearchNetworkApi {
 }
 
 
-interface SearchNetworkRx {
+interface SearchNetworkApiRx {
     @GET("/v2/search/image")
     fun getImageDataByObservable(@QueryMap params: Map<String, String>): Observable<ResImageData>
 
